@@ -1,0 +1,137 @@
+@CHARSET "UTF-8";
+
+body {
+	background-color:#ffcc66;
+	color:#8b4513;
+	line-height:1.2;
+	font-size:1.4em;
+}
+
+input {
+	font-size:100%;
+}
+
+select {
+	font-size:100%;
+}
+
+table,th,td {
+	font-size:100%;
+	border-collapse:collapse;
+	border-color:#8b4513;
+}
+
+th {
+	background-color:#ff9900;
+	color:#8B4513;
+}
+
+/*通常ボタン*/
+.normal {
+	background-color: #808000;
+	border-top:    1px solid #9999CC;
+	border-right:  2px solid #224477;
+	border-bottom: 2px solid #224477;
+	border-left:   1px solid #9999CC;
+	color: #ffffff;
+}
+
+.normal:active {
+	background-color: #808000;
+	border-top:    2px solid #224477;
+	border-right:  1px solid #9999CC;
+	border-bottom: 1px solid #9999CC;
+	border-left:   2px solid #224477;
+	color: #8b4513;
+}
+
+.normal:disabled {
+	background-color: #a3a333;
+	border-top:    1px solid #9999CC;
+	border-right:  2px solid #224477;
+	border-bottom: 2px solid #224477;
+	border-left:   1px solid #9999CC;
+	color: #cccccc;
+}
+
+/*削除ボタン*/
+.delete {
+	background-color: #FF2222;
+	border-top:    1px solid #FF4444;
+	border-right:  2px solid #990000;
+	border-bottom: 2px solid #990000;
+	border-left:   1px solid #FF4444;
+	color: #FFFFFF;
+}
+
+.delete:active {
+	background-color: #FF2222;
+	border-top:    2px solid #990000;
+	border-right:  1px solid #FF4444;
+	border-bottom: 1px solid #FF4444;
+	border-left:   2px solid #990000;
+	color: #FFFFFF;
+}
+
+.delete:disabled {
+	background-color: #FF4444;
+	border-top:    1px solid #FF4444;
+	border-right:  2px solid #990000;
+	border-bottom: 2px solid #990000;
+	border-left:   1px solid #FF4444;
+	color: #ff6666;
+}
+
+a {
+	color:#006400;
+	font-style:normal;
+	text-decoration:underline;
+}
+
+a:link {
+	color:#006400;
+	font-style:normal;
+	text-decoration:none;
+}
+a:visited {
+	color:#006400;
+	text-decoration:none;
+}
+
+a:hover {
+	color:#006400;
+	font-style:normal;
+	text-decoration:underline;
+}
+
+a:active {
+    text-decoration:none;
+}
+
+.boxLeft {
+	float:left;
+}
+
+.boxRight {
+	float:right;
+}
+
+.boxLeft100 {
+	width:100px;
+	float:left;
+}
+.boxLeft150 {
+	width:150px;
+	float:left;
+}
+.boxLeft200 {
+	width:200px;
+	float:left;
+}
+.boxLeft300 {
+	width:300px;
+	float:left;
+}
+.boxNone {
+	float:none;
+}
