@@ -305,3 +305,4 @@ create table close_discount (
 	foreign key (slip_id) references close_head(slip_id) on delete cascade,
 	primary key (slip_id, detail_id)
 );
+aa
