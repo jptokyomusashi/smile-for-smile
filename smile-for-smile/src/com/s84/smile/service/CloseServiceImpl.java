@@ -27,10 +27,11 @@ import com.s84.smile.util.DateUtil;
 @Service
 public class CloseServiceImpl implements CloseService {
 
-	private static final int KYUYOCHINGIN = 1;
+	private static final int ACCOUNT_KYUYO = 1;
 	private static final int TAXLIMIT = 12000;
 	private static final int TAXRATE = 5;
-
+	private static final int MINPAYMENT = 6000;
+	
 	@Autowired
 	private CloseHeadDao closeHeadDao;
 	@Autowired
@@ -49,7 +50,25 @@ public class CloseServiceImpl implements CloseService {
 	private PaymentSlipService paymentSlipService;
 
 	@Override
-	public void close(List<SalesSlipBean> salesSlipList, EmployeeBean employeeBean) {
+	public void insert(CloseBean closeBean) {
+		//ヘッダ登録
+		closeHeadDao.insert(closeBean.getCloseHeadBean());
+
+		//オプション登録
+		List<CloseOptionmenuBean> closeOptionmenuList = closeBean.getCloseOptionmenuList();
+		for (CloseOptionmenuBean closeOptionmenuBean: closeOptionmenuList) {
+			closeOptionmenuDao.insert(closeOptionmenuBean);
+		}
+
+		//割引登録
+		List<CloseDiscountBean> closeDiscountList = closeBean.getCloseDiscountList();
+		for (CloseDiscountBean closeDiscountBean: closeDiscountList) {
+			closeDiscountDao.insert(closeDiscountBean);
+		}
+	}
+
+	@Override
+	public void close(List<SalesSlipBean> salesSlipList, Date day, String employeeId, EmployeeBean employeeBean) {
 		List<CloseBean> closeList = new ArrayList<CloseBean>();
 
 		Integer paymentCharge = 0;
@@ -59,45 +78,52 @@ public class CloseServiceImpl implements CloseService {
 			//オプション
 			List<CloseOptionmenuBean> closeOptionmenuList = createCloseOptionmenuList(salesSlipBean.getSalesSlipOptionmenuList(), employeeBean);
 			closeBean.setCloseOptionmenuList(closeOptionmenuList);
-
 			//割引
 			List<CloseDiscountBean> closeDiscountList = createCloseDiscountList(salesSlipBean.getSalesSlipDiscountList(), employeeBean);
-			closeBean.setCloseDiscountList(closeDiscountList);
-		
+			closeBean.setCloseDiscountList(closeDiscountList);	
 			//ヘッダ
-			CloseHeadBean closeHeadBean = createCloseBean(salesSlipBean.getSalesSlipHeadBean(), employeeBean);
+			CloseHeadBean closeHeadBean = createCloseHeadBean(salesSlipBean.getSalesSlipHeadBean(), employeeBean);
 			closeBean.setCloseHeadBean(closeHeadBean);
 
 			closeList.add(closeBean);
 			paymentCharge += (closeBean.getSalesTotalForEmployee() - closeBean.getDiscountTotalForEmployee());
 		}
 
-		//支払伝票
-		int paymentSlipId = 0;
 		if (salesSlipList.size() > 0) {
-			PaymentSlipBean paymentSlipBean = createPaymentSlipBean(salesSlipList, paymentCharge, employeeBean);
+			//税額計算
+			int tax = 0;
+			if (paymentCharge >= TAXLIMIT) {
+				tax = (int)(paymentCharge * (TAXRATE) / 100.0);
+			}
+
+			//支払伝票
+			PaymentSlipBean paymentSlipBean = createPaymentSlipBean(salesSlipList, paymentCharge, tax);
 			//支払伝票登録
-			paymentSlipId = paymentSlipService.insert(paymentSlipBean, employeeBean);
-		}
+			int paymentSlipId = paymentSlipService.insert(paymentSlipBean, employeeBean);
 
-		//締め伝票登録
-		for (CloseBean closeBean: closeList) {
-			//支払伝票番号
-			closeBean.getCloseHeadBean().setPaymentSlipId(paymentSlipId);
-			//ヘッダ登録
-			closeHeadDao.insert(closeBean.getCloseHeadBean());
-
-			//オプション登録
-			List<CloseOptionmenuBean> closeOptionmenuList = closeBean.getCloseOptionmenuList();
-			for (CloseOptionmenuBean closeOptionmenuBean: closeOptionmenuList) {
-				closeOptionmenuDao.insert(closeOptionmenuBean);
+			//締め伝票登録
+			boolean first = true;
+			for (CloseBean closeBean: closeList) {
+				//支払伝票番号
+				closeBean.getCloseHeadBean().setPaymentSlipId(paymentSlipId);
+				//税額控除分反映
+				if (first && tax > 0) {
+					closeBean.getCloseHeadBean().setCourseChargeEmployee(closeBean.getCloseHeadBean().getCourseChargeEmployee() - tax);
+					closeBean.getCloseHeadBean().setCourseCharge(closeBean.getCloseHeadBean().getCourseCharge() + tax);	
+					first = false;
+				}
+				this.insert(closeBean);
 			}
-
-			//割引登録
-			List<CloseDiscountBean> closeDiscountList = closeBean.getCloseDiscountList();
-			for (CloseDiscountBean closeDiscountBean: closeDiscountList) {
-				closeDiscountDao.insert(closeDiscountBean);
-			}
+		} else {
+			//売上伝票がない場合、最低支払額の支払のみ
+			PaymentSlipBean paymentSlipBean = createPaymentSlipBean(day, employeeId);
+			int paymentSlipId = paymentSlipService.insert(paymentSlipBean, employeeBean);
+			//締め伝票
+			CloseHeadBean closeHeadBean = createCloseHeadBean(day, employeeId, employeeBean);
+			closeHeadBean.setPaymentSlipId(paymentSlipId);
+			CloseBean closeBean = new CloseBean();
+			closeBean.setCloseHeadBean(closeHeadBean);
+			this.insert(closeBean);
 		}
 	}
 
@@ -120,7 +146,7 @@ public class CloseServiceImpl implements CloseService {
 		paymentSlipService.delete(paymentSlipId);
 	}
 
-	private PaymentSlipBean createPaymentSlipBean(List<SalesSlipBean> salesSlipList, Integer paymentCharge, EmployeeBean employeeBean) {
+	private PaymentSlipBean createPaymentSlipBean(List<SalesSlipBean> salesSlipList, int paymentCharge, int tax) {
 		SalesSlipHeadBean salesSlipHeadBean = salesSlipList.get(0).getSalesSlipHeadBean();
 		
 		PaymentSlipBean paymentSlipBean = new PaymentSlipBean();
@@ -130,28 +156,42 @@ public class CloseServiceImpl implements CloseService {
 		paymentSlipHeadBean.setDay(salesSlipHeadBean.getDay());
 		EmployeeBean staff = employeeService.selectByEmployeeId(salesSlipHeadBean.getEmployeeId());
 		paymentSlipHeadBean.setPayee(staff.getName());
-		paymentSlipHeadBean.setUpDay(DateUtil.getDay(0));
-		paymentSlipHeadBean.setUpEmployeeId(employeeBean.getEmployeeId());
 	
 		//支払伝票明細
 		PaymentSlipDetailBean paymentSlipDetailBean = new PaymentSlipDetailBean();
-		paymentSlipDetailBean.setAccount(KYUYOCHINGIN);
+		paymentSlipDetailBean.setAccount(ACCOUNT_KYUYO);
 		paymentSlipDetailBean.setName("給料");
-		Integer paymentChargeTax = paymentCharge;
-		if (paymentCharge >= TAXLIMIT) {
-			paymentChargeTax = (int)(paymentCharge * (100 - TAXRATE) / 100);
-			paymentSlipDetailBean.setComment("税額控除" + (paymentCharge - paymentChargeTax));
-		}
-		paymentSlipDetailBean.setUnitPrice(paymentChargeTax);
+		paymentSlipDetailBean.setComment("税額控除" + tax + "円");
+		paymentSlipDetailBean.setUnitPrice(paymentCharge - tax);
 		paymentSlipDetailBean.setAmount(1);
-		paymentSlipDetailBean.setUpDay(DateUtil.getDay(0));
-		paymentSlipDetailBean.setUpEmployeeId(employeeBean.getEmployeeId());
 
 		paymentSlipBean.setPaymentSlipHeadBean(paymentSlipHeadBean);
 		paymentSlipBean.addDetail(paymentSlipDetailBean);
 		return paymentSlipBean;
 	}
+
+	private PaymentSlipBean createPaymentSlipBean(Date day, String employeeId) {
+		PaymentSlipBean paymentSlipBean = new PaymentSlipBean();
+		
+		//支払伝票ヘッダ
+		PaymentSlipHeadBean paymentSlipHeadBean = new PaymentSlipHeadBean();
+		paymentSlipHeadBean.setDay(day);
+		EmployeeBean staff = employeeService.selectByEmployeeId(employeeId);
+		paymentSlipHeadBean.setPayee(staff.getName());
 	
+		//支払伝票明細
+		PaymentSlipDetailBean paymentSlipDetailBean = new PaymentSlipDetailBean();
+		paymentSlipDetailBean.setAccount(ACCOUNT_KYUYO);
+		paymentSlipDetailBean.setName("給料");
+		paymentSlipDetailBean.setComment("税額控除0円");
+		paymentSlipDetailBean.setUnitPrice(MINPAYMENT);
+		paymentSlipDetailBean.setAmount(1);
+
+		paymentSlipBean.setPaymentSlipHeadBean(paymentSlipHeadBean);
+		paymentSlipBean.addDetail(paymentSlipDetailBean);
+		return paymentSlipBean;
+	}
+
 	private List<CloseOptionmenuBean> createCloseOptionmenuList(List<SalesSlipOptionmenuBean> salesSlipOptionmenuList, EmployeeBean employeeBean) {
 		List<CloseOptionmenuBean> closeOptionmenuList = new ArrayList<CloseOptionmenuBean>();
 
@@ -202,7 +242,7 @@ public class CloseServiceImpl implements CloseService {
 		return closeDiscountList;
 	}
 
-	private CloseHeadBean createCloseBean(SalesSlipHeadBean salesSlipHeadBean, EmployeeBean employeeBean) {
+	private CloseHeadBean createCloseHeadBean(SalesSlipHeadBean salesSlipHeadBean, EmployeeBean employeeBean) {
 		CloseHeadBean closeHeadBean = new CloseHeadBean();
 
 		closeHeadBean.setSlipId(salesSlipHeadBean.getSlipId());
@@ -217,8 +257,6 @@ public class CloseServiceImpl implements CloseService {
 		closeHeadBean.setAppointId(salesSlipHeadBean.getAppointId());
 		closeHeadBean.setUpDay(DateUtil.getDay(0));
 		closeHeadBean.setUpEmployeeId(employeeBean.getEmployeeId());
-		closeHeadBean.setTax(0);
-		closeHeadBean.setPaymentSlipId(0);
 
 		//コース料金従業員支払割合
 		int courseShare =  employeeService.selectByEmployeeId(salesSlipHeadBean.getEmployeeId()).getShare();
@@ -246,6 +284,21 @@ public class CloseServiceImpl implements CloseService {
 			//指名料金(店舗)
 			closeHeadBean.setAppointCharge(salesSlipHeadBean.getAppointCharge() - closeHeadBean.getAppointChargeEmployee());
 		}
+
+		return closeHeadBean;
+	}
+
+	private CloseHeadBean createCloseHeadBean(Date day, String employeeId, EmployeeBean employeeBean) {
+		CloseHeadBean closeHeadBean = new CloseHeadBean();
+
+		closeHeadBean.setDay(day);
+		closeHeadBean.setEmployeeId(employeeId);
+		closeHeadBean.setUpDay(DateUtil.getDay(0));
+		closeHeadBean.setUpEmployeeId(employeeBean.getEmployeeId());
+		//コース料金(従業員)
+		closeHeadBean.setCourseChargeEmployee(MINPAYMENT);
+		//コース料金(店舗)
+		closeHeadBean.setCourseCharge(0);
 
 		return closeHeadBean;
 	}

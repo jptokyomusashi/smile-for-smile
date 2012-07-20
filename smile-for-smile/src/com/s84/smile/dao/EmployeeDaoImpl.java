@@ -11,7 +11,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
-import com.s84.smile.bean.AttendanceSearchResultBean;
+import com.s84.smile.bean.CloseSearchResultBean;
 import com.s84.smile.bean.EmployeeBean;
 
 @Repository
@@ -20,11 +20,11 @@ public class EmployeeDaoImpl implements EmployeeDao {
 	private static final String SELECT_BY_EMPLOYEEID_AND_PASSWORD = "select * from employee where employee_id = ? and password = ? and resigned is null";
 	private static final String SELECT_BY_EMPLOYEEID = "select * from employee where employee_id = ? and resigned is null";
 	private static final String SELECT_ALL = "select * from employee where authority < 10 and resigned is null order by sort";
-	private static final String SELECT_ATTENDANCE_CLOSE = "select e.employee_id, e.name," +
-														"         case when c.day is null then false else true end closed from employee e" +
-														"    left outer join (select day, employee_id from close_head group by day, employee_id) c" +
-														"      on e.employee_id = c.employee_id and c.day = ?" +
-														"   where authority < 10 and resigned is null order by sort";
+	private static final String SELECT_CLOSE = "select e.employee_id, e.name," +
+													"         case when c.day is null then false else true end closed from employee e" +
+													"    left outer join (select day, employee_id from close_head group by day, employee_id) c" +
+													"      on e.employee_id = c.employee_id and c.day = ?" +
+													"   where authority < 10 and resigned is null order by sort";
 	//private static final String INSERT = "";
 	//private static final String UPDATE = "";
 	
@@ -54,9 +54,9 @@ public class EmployeeDaoImpl implements EmployeeDao {
 	}
 
 	@Override
-	public List<AttendanceSearchResultBean> selectAttendanceClose(Date day) {
-		RowMapper<AttendanceSearchResultBean> mapper = new BeanPropertyRowMapper<AttendanceSearchResultBean>(AttendanceSearchResultBean.class);
-		return this.template.query(SELECT_ATTENDANCE_CLOSE, mapper, day);
+	public List<CloseSearchResultBean> selectAttendanceClose(Date day) {
+		RowMapper<CloseSearchResultBean> mapper = new BeanPropertyRowMapper<CloseSearchResultBean>(CloseSearchResultBean.class);
+		return this.template.query(SELECT_CLOSE, mapper, day);
 	}
 
 	@Override

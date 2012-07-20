@@ -4,11 +4,11 @@ import java.util.Date;
 
 import com.s84.smile.util.DateUtil;
 
-public class AttendanceSearchConditionBean {
+public class CloseSearchConditionBean {
 
 	private Date day;
 
-	public AttendanceSearchConditionBean() {
+	public CloseSearchConditionBean() {
 		this.day = DateUtil.getDay(-300);
 	}
 

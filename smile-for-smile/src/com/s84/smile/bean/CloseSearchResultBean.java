@@ -1,6 +1,6 @@
 package com.s84.smile.bean;
 
-public class AttendanceSearchResultBean {
+public class CloseSearchResultBean {
 
 	private String employeeId;
 	private String name;

@@ -14,7 +14,7 @@
 	</td>
 
 	<td valign="top">
-	<form:form name="form" modelAttribute="attendanceSearchConditionBean" method="post" action="/attendance/doSearch.html">
+	<form:form name="form" modelAttribute="closeSearchConditionBean" method="post" action="/close/doSearch.html">
 		<h2>締め情報検索</h2>
 
 		<table border="1">

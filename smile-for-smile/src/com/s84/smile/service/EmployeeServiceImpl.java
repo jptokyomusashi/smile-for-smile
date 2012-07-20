@@ -6,7 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.s84.smile.bean.AttendanceSearchResultBean;
+import com.s84.smile.bean.CloseSearchResultBean;
 import com.s84.smile.bean.EmployeeBean;
 import com.s84.smile.dao.EmployeeDao;
 
@@ -32,7 +32,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 	}
 
 	@Override
-	public List<AttendanceSearchResultBean> selectAttendanceClose(Date day) {
+	public List<CloseSearchResultBean> selectAttendanceClose(Date day) {
 		return employeeDao.selectAttendanceClose(day);		
 	}
 

@@ -256,14 +256,14 @@ insert into account values(13, 1, 'おしぼり代', null, null, now(), 'smile')
 insert into account values(14, 1, '雑費', null, null, now(), 'smile');
 
 create table close_head (
-	slip_id int not null,
+	slip_id int,
 	day date not null,
 	employee_id varchar(10) not null,
 	member_id varchar(10),
-	start_time time not null,
-	end_time time not null,
-	course_class_id smallint not null,
-	course_id smallint not null,
+	start_time time,
+	end_time time,
+	course_class_id smallint,
+	course_id smallint,
 	course_charge smallint not null,
 	course_charge_employee smallint not null,
 	course_extension_id smallint,
@@ -272,14 +272,15 @@ create table close_head (
 	appoint_id smallint,
 	appoint_charge smallint,
 	appoint_charge_employee smallint,
-	tax smallint not null,
+	tax smallint,
 	payment_slip_id int not null,
 	up_day datetime not null,
 	up_employee_id varchar(10) not null,
 	foreign key (slip_id) references sales_slip_head(slip_id) on delete restrict,
 	foreign key (employee_id) references employee(employee_id) on delete restrict,
-	index idx_day_employee_id(day, employee_id),
-	primary key (slip_id)
+	index idx_slip_id(slip_id),
+	index idx_day(day),
+	index idx_day_employee_id(day, employee_id)
 );
 
 create table close_optionmenu (
@@ -290,8 +291,8 @@ create table close_optionmenu (
 	charge_employee smallint not null,
 	up_day datetime not null,
 	up_employee_id varchar(10) not null,
-	foreign key (slip_id) references close_head(slip_id) on delete cascade,
-	primary key (slip_id, detail_id)
+	index idx_slip_id(slip_id),
+	index idx_slip_id_detail_id(slip_id, detail_id)
 );
 
 create table close_discount (
@@ -302,7 +303,6 @@ create table close_discount (
 	charge_employee smallint not null,
 	up_day datetime not null,
 	up_employee_id varchar(10) not null,
-	foreign key (slip_id) references close_head(slip_id) on delete cascade,
-	primary key (slip_id, detail_id)
+	index idx_slip_id(slip_id),
+	index idx_slip_id_detail_id(slip_id, detail_id)
 );
-aa
