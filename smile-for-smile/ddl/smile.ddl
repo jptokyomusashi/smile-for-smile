@@ -1,3 +1,4 @@
+drop table code;
 create table code (
 	category varchar(20),
 	code tinyint,
@@ -15,6 +16,7 @@ insert into code values('weekday', 4, '金曜日');
 insert into code values('weekday', 5, '土曜日');
 insert into code values('weekday', 6, '日曜日');
 
+drop table employee;
 create table employee (
 	employee_id varchar(10),
 	password varchar(10) not null,
@@ -37,6 +39,7 @@ insert into employee values('mika', 'password', 'ミカ', null, 50, 0, 6, null, 
 insert into employee values('dao', 'password', 'ダォ', null, 50, 0, 7, null, now(),'smile');
 insert into employee values('nana', 'password', 'ナナ', null, 50, 0, 8, null, now(),'smile');
 
+drop table course_class;
 create table course_class (
 	course_class_id smallint auto_increment,
 	name varchar(20) not null,
@@ -52,6 +55,7 @@ insert into course_class values(3, 'オイル',      3, null, now(), 'smile');
 insert into course_class values(4, 'オイルVIP',   4, null, now(), 'smile');
 insert into course_class values(5, 'セット',      5, null, now(), 'smile');
 
+drop table course;
 create table course (
 	course_class_id smallint,
 	course_id smallint auto_increment,
@@ -96,6 +100,7 @@ insert into course values(5, 2, '100分女性', 10000, 100, 2, null, now(), 'smi
 insert into course values(5, 3, '130分男性', 14000, 130, 3, null, now(), 'smile');
 insert into course values(5, 4, '130分女性', 12000, 130, 4, null, now(), 'smile');
 
+drop table course_extension;
 create table course_extension (
 	course_class_id smallint,
 	course_extension_id smallint auto_increment,
@@ -118,6 +123,7 @@ insert into course_extension values(4, 1, '延長30分', 5000, 30, 1, null, now(
 insert into course_extension values(5, 1, '古式30分', 3000, 30, 1, null, now(), 'smile');
 insert into course_extension values(5, 2, 'オイル30分', 4000, 30, 1, null, now(), 'smile');
 
+drop table discount;
 create table discount (
 	discount_id smallint auto_increment,
 	name varchar(30) not null,
@@ -138,6 +144,7 @@ insert into discount values(6, '接待割1000', 1000, 0, 6, null, now(), 'smile'
 insert into discount values(7, '接待割2000', 2000, 0, 7, null, now(), 'smile');
 insert into discount values(8, '接待割4000', 4000, 0, 8, null, now(), 'smile');
 
+drop table optionmenu;
 create table optionmenu (
 	optionmenu_id smallint auto_increment,
 	name varchar(30) not null,
@@ -149,9 +156,10 @@ create table optionmenu (
 	up_employee_id varchar(10) not null,
 	primary key (optionmenu_id)
 );
-insert into option values(1, '1000円オプション', 1000, 50, 1, null, now(), 'smile');
-insert into option values(2, '2000円オプション', 2000, 50, 2, null, now(), 'smile');
+insert into optionmenu values(1, '1000円オプション', 1000, 50, 1, null, now(), 'smile');
+insert into optionmenu values(2, '2000円オプション', 2000, 50, 2, null, now(), 'smile');
 
+drop table appoint;
 create table appoint (
 	appoint_id smallint auto_increment,
 	name varchar(30) not null,
@@ -165,6 +173,7 @@ create table appoint (
 );
 insert into appoint values(1, '指名', 1000, 100, 1, null, now(), 'smile');
 
+drop table sales_slip_head;
 create table sales_slip_head (
 	slip_id int auto_increment,
 	day date not null,
@@ -182,9 +191,11 @@ create table sales_slip_head (
 	up_day datetime not null,
 	up_employee_id varchar(10) not null,
 	foreign key (employee_id) references employee(employee_id) on delete restrict,
+	index idx_day_employee_id(day, employee_id),
 	primary key (slip_id)
 );
 
+drop table sales_slip_discount;
 create table sales_slip_discount (
 	slip_id int,
 	detail_id smallint,
@@ -196,6 +207,7 @@ create table sales_slip_discount (
 	primary key (slip_id, detail_id)
 );
 
+drop table sales_slip_optionmenu;
 create table sales_slip_optionmenu (
 	slip_id int,
 	detail_id smallint,
@@ -207,6 +219,7 @@ create table sales_slip_optionmenu (
 	primary key (slip_id, detail_id)
 );
 
+drop table payment_slip_head;
 create table payment_slip_head (
 	slip_id int auto_increment,
 	day date not null,
@@ -216,6 +229,7 @@ create table payment_slip_head (
 	primary key (slip_id)
 );
 
+drop table payment_slip_detail;
 create table payment_slip_detail (
 	slip_id int,
 	detail_id smallint,
@@ -230,6 +244,7 @@ create table payment_slip_detail (
 	primary key (slip_id, detail_id)
 );
 
+drop table account;
 create table account (
 	id smallint,
 	kind smallint not null,
@@ -255,6 +270,7 @@ insert into account values(12, 1, 'リース代', null, null, now(), 'smile');
 insert into account values(13, 1, 'おしぼり代', null, null, now(), 'smile');
 insert into account values(14, 1, '雑費', null, null, now(), 'smile');
 
+drop table close_head;
 create table close_head (
 	slip_id int,
 	day date not null,
@@ -279,10 +295,12 @@ create table close_head (
 	foreign key (slip_id) references sales_slip_head(slip_id) on delete restrict,
 	foreign key (employee_id) references employee(employee_id) on delete restrict,
 	index idx_slip_id(slip_id),
+	index idx_payment_slip_id(payment_slip_id),
 	index idx_day(day),
 	index idx_day_employee_id(day, employee_id)
 );
 
+drop table close_optionmenu;
 create table close_optionmenu (
 	slip_id int not null,
 	detail_id smallint not null,
@@ -295,6 +313,7 @@ create table close_optionmenu (
 	index idx_slip_id_detail_id(slip_id, detail_id)
 );
 
+drop table close_discount;
 create table close_discount (
 	slip_id int not null,
 	detail_id smallint not null,

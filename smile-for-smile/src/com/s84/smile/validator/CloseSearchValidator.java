@@ -5,7 +5,7 @@ import org.springframework.validation.Validator;
 
 import com.s84.smile.bean.CloseSearchConditionBean;
 
-public class AttendanceSearchValidator implements Validator {
+public class CloseSearchValidator implements Validator {
 
 	@Override
 	public boolean supports(Class<?> clazz) {

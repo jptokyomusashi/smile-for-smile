@@ -5,16 +5,26 @@ import java.util.Date;
 public class SalesSummarySearchResultBean {
 
 	private Date day;
+	private String employeeName;
 	private String courseClassName;
 	private String courseName;
 	private Date startTime;
 	private Date endTime;
-	private int chargeEmployee;
-	private int chargeShop;
-	private int discountEmployee;
-	private int discountShop;
-	private String appointId;
+	private Integer chargeEmployee;
+	private Integer chargeShop;
+	private Integer discountEmployee;
+	private Integer discountShop;
+	private Integer tax;
+	private Integer appointId;
 	private String memberId;
+
+	public Integer getTax() {
+		return tax;
+	}
+
+	public void setTax(Integer tax) {
+		this.tax = tax;
+	}
 
 	public Date getDay() {
 		return day;
@@ -22,6 +32,14 @@ public class SalesSummarySearchResultBean {
 
 	public void setDay(Date day) {
 		this.day = day;
+	}
+
+	public String getEmployeeName() {
+		return employeeName;
+	}
+
+	public void setEmployeeName(String employeeName) {
+		this.employeeName = employeeName;
 	}
 
 	public String getCourseClassName() {
@@ -56,43 +74,43 @@ public class SalesSummarySearchResultBean {
 		this.endTime = endTime;
 	}
 
-	public int getChargeEmployee() {
+	public Integer getChargeEmployee() {
 		return chargeEmployee;
 	}
 
-	public void setChargeEmployee(int chargeEmployee) {
+	public void setChargeEmployee(Integer chargeEmployee) {
 		this.chargeEmployee = chargeEmployee;
 	}
 
-	public int getChargeShop() {
+	public Integer getChargeShop() {
 		return chargeShop;
 	}
 
-	public void setChargeShop(int chargeShop) {
+	public void setChargeShop(Integer chargeShop) {
 		this.chargeShop = chargeShop;
 	}
 
-	public int getDiscountEmployee() {
+	public Integer getDiscountEmployee() {
 		return discountEmployee;
 	}
 
-	public void setDiscountEmployee(int discountEmployee) {
+	public void setDiscountEmployee(Integer discountEmployee) {
 		this.discountEmployee = discountEmployee;
 	}
 
-	public int getDiscountShop() {
+	public Integer getDiscountShop() {
 		return discountShop;
 	}
 
-	public void setDiscountShop(int discountShop) {
+	public void setDiscountShop(Integer discountShop) {
 		this.discountShop = discountShop;
 	}
 
-	public String getAppointId() {
+	public Integer getAppointId() {
 		return appointId;
 	}
 
-	public void setAppointId(String appointId) {
+	public void setAppointId(Integer appointId) {
 		this.appointId = appointId;
 	}
 
@@ -103,5 +121,4 @@ public class SalesSummarySearchResultBean {
 	public void setMemberId(String memberId) {
 		this.memberId = memberId;
 	}
-	
 }

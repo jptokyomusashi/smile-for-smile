@@ -17,11 +17,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.s84.smile.bean.CloseHeadBean;
 import com.s84.smile.bean.EmployeeBean;
 import com.s84.smile.bean.PaymentSlipBean;
 import com.s84.smile.bean.PaymentSlipSearchConditionBean;
 import com.s84.smile.bean.PaymentSlipSearchResultBean;
 import com.s84.smile.service.AccountService;
+import com.s84.smile.service.CloseService;
 import com.s84.smile.service.PaymentSlipService;
 import com.s84.smile.util.DateUtil;
 
@@ -36,6 +38,8 @@ public class PaymentController {
 	private Validator paymentSlipEntryValidator;
 	@Autowired
 	private Validator paymentSlipSearchValidator;
+	@Autowired
+	private CloseService closeService;
 
 	@InitBinder
 	public void initBinder(WebDataBinder binder) throws Exception {
@@ -95,6 +99,9 @@ public class PaymentController {
 		modelAndView.addObject("paymentSlipBean", paymentSlipBean);
 		//勘定科目SELECT
 		modelAndView.addObject("account", accountService.selectAll());
+		//締め伝票
+		CloseHeadBean closeHeadBean = closeService.selectByPaymentSlipId(slipId);
+		modelAndView.addObject("closeHeadBean", closeHeadBean);
 		//支払伝票登録画面
 		modelAndView.setViewName("payment/entry");
 
@@ -109,6 +116,13 @@ public class PaymentController {
 
 		//勘定科目SELECT
 		modelAndView.addObject("account", accountService.selectAll());
+
+		//締め伝票
+		if (paymentSlipBean.getPaymentSlipHeadBean().getSlipId() != null) {
+			CloseHeadBean closeHeadBean = closeService.selectByPaymentSlipId(paymentSlipBean.getPaymentSlipHeadBean().getSlipId());
+			modelAndView.addObject("closeHeadBean", closeHeadBean);
+		}
+
 		//支払伝票登録画面
 		modelAndView.setViewName("payment/entry");
 

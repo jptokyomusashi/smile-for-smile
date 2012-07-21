@@ -30,7 +30,8 @@
 	<bean id="salesSlipSearchValidator" class="com.s84.smile.validator.SalesSlipSearchValidator"/>
 	<bean id="paymentSlipEntryValidator" class="com.s84.smile.validator.PaymentSlipEntryValidator"/>
 	<bean id="paymentSlipSearchValidator" class="com.s84.smile.validator.PaymentSlipSearchValidator"/>
-	<bean id="attendanceSearchValidator" class="com.s84.smile.validator.AttendanceSearchValidator"/>
+	<bean id="closeSearchValidator" class="com.s84.smile.validator.CloseSearchValidator"/>
+	<bean id="salesSummarySearchValidator" class="com.s84.smile.validator.SalesSummarySearchValidator"/>
 
 	<!-- MessageSource -->
 	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">

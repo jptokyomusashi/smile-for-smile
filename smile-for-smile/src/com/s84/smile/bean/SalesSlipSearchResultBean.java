@@ -5,12 +5,39 @@ import java.util.Date;
 public class SalesSlipSearchResultBean {
 
 	private int slipId;
+	private Integer closeSlipId;
 	private Date day;
 	private String employeeId;
 	private String name;
-	private String memberId;
 	private Date startTime;
 	private Date endTime;
+	private String memberId;
+	private Integer appointId;
+	private Integer totalCharge;
+
+	public Integer getCloseSlipId() {
+		return closeSlipId;
+	}
+
+	public void setCloseSlipId(Integer closeSlipId) {
+		this.closeSlipId = closeSlipId;
+	}
+
+	public Integer getAppointId() {
+		return appointId;
+	}
+
+	public void setAppointId(Integer appointId) {
+		this.appointId = appointId;
+	}
+
+	public Integer getTotalCharge() {
+		return totalCharge;
+	}
+
+	public void setTotalCharge(Integer totalCharge) {
+		this.totalCharge = totalCharge;
+	}
 
 	public int getSlipId() {
 		return slipId;

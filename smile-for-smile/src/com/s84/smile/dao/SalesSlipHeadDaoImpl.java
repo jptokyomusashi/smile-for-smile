@@ -62,10 +62,17 @@ public class SalesSlipHeadDaoImpl implements SalesSlipHeadDao {
 
 	@Override
 	public List<SalesSlipSearchResultBean> select(SalesSlipSearchConditionBean salesSlipSearchConditionBean) {
-		String query = "select h.slip_id, h.day, h.employee_id, e.name, h.member_id, h.start_time, h.end_time " +
-					"     from sales_slip_head h" +
-					"    inner join employee e on h.employee_id = e.employee_id" +
-					"    where 1 = 1";
+		String query = "select h.slip_id, c.slip_id close_slip_id, h.day, h.employee_id, e.name, h.member_id, h.start_time, h.end_time, h.appoint_id, " +
+						"        h.course_charge + ifnull(h.course_extension_charge, 0) + ifnull(h.appoint_charge, 0) + ifnull(o.charge, 0) - ifnull(d.charge, 0) totalCharge" +
+						"   from sales_slip_head h" +
+						"  inner join employee e on h.employee_id = e.employee_id" +
+						"   left outer join (select slip_id, sum(charge) charge from sales_slip_optionmenu group by slip_id) o" +
+						"     on h.slip_id = o.slip_id" +
+						"   left outer join (select slip_id, sum(charge) charge from sales_slip_discount group by slip_id) d" +
+						"     on h.slip_id = d.slip_id" +
+						"   left outer join close_head c" +
+						"     on h.slip_id = c.slip_id" +
+						"  where 1 = 1";
 		//日付FROM
 		if (salesSlipSearchConditionBean.getDayFrom() != null) {
 			query += " and h.day >= '" + DateUtil.getDateFormat().format(salesSlipSearchConditionBean.getDayFrom()) + "'";

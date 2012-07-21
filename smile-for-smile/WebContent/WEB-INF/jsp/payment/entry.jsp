@@ -112,7 +112,7 @@
 				<input class="normal" type="submit" value="登録"/>
 			</c:when>
 			<c:otherwise>
-				<input class="normal" type="submit" value="修正"/>
+				<c:if test="${empty closeHeadBean}"><input class="normal" type="submit" value="修正"/></c:if>
 				<input type="button" class="normal" value="戻る" onclick="move('/payment/list.html'); return false;"/>
 			</c:otherwise>
 		</c:choose>

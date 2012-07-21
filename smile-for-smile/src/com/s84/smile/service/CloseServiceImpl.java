@@ -19,6 +19,8 @@ import com.s84.smile.bean.SalesSlipBean;
 import com.s84.smile.bean.SalesSlipDiscountBean;
 import com.s84.smile.bean.SalesSlipHeadBean;
 import com.s84.smile.bean.SalesSlipOptionmenuBean;
+import com.s84.smile.bean.SalesSummarySearchResultBean;
+import com.s84.smile.dao.CloseDao;
 import com.s84.smile.dao.CloseDiscountDao;
 import com.s84.smile.dao.CloseHeadDao;
 import com.s84.smile.dao.CloseOptionmenuDao;
@@ -32,6 +34,8 @@ public class CloseServiceImpl implements CloseService {
 	private static final int TAXRATE = 5;
 	private static final int MINPAYMENT = 6000;
 	
+	@Autowired
+	private CloseDao closeDao;
 	@Autowired
 	private CloseHeadDao closeHeadDao;
 	@Autowired
@@ -109,7 +113,8 @@ public class CloseServiceImpl implements CloseService {
 				//税額控除分反映
 				if (first && tax > 0) {
 					closeBean.getCloseHeadBean().setCourseChargeEmployee(closeBean.getCloseHeadBean().getCourseChargeEmployee() - tax);
-					closeBean.getCloseHeadBean().setCourseCharge(closeBean.getCloseHeadBean().getCourseCharge() + tax);	
+					closeBean.getCloseHeadBean().setCourseCharge(closeBean.getCloseHeadBean().getCourseCharge() + tax);
+					closeBean.getCloseHeadBean().setTax(tax);	
 					first = false;
 				}
 				this.insert(closeBean);
@@ -144,6 +149,11 @@ public class CloseServiceImpl implements CloseService {
 		closeHeadDao.delete(day, employeeId);
 		//支払伝票削除
 		paymentSlipService.delete(paymentSlipId);
+	}
+
+	@Override
+	public List<SalesSummarySearchResultBean> selectSalesSummary(Date dayFrom, Date dayTo) {
+		return closeDao.selectSalesSummary(dayFrom, dayTo);
 	}
 
 	private PaymentSlipBean createPaymentSlipBean(List<SalesSlipBean> salesSlipList, int paymentCharge, int tax) {
@@ -301,5 +311,13 @@ public class CloseServiceImpl implements CloseService {
 		closeHeadBean.setCourseCharge(0);
 
 		return closeHeadBean;
+	}
+
+	public CloseHeadBean selectBySalesSlipId(Integer salesSlipId) {
+		return closeHeadDao.selectBySalesSlipId(salesSlipId);
+	}
+
+	public CloseHeadBean selectByPaymentSlipId(Integer paymentSlipId) {
+		return closeHeadDao.selectByPaymentSlipId(paymentSlipId);
 	}
 }

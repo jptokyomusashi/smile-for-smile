@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.s84.smile.bean.CloseHeadBean;
 import com.s84.smile.bean.DiscountBean;
 import com.s84.smile.bean.EmployeeBean;
 import com.s84.smile.bean.OptionmenuBean;
@@ -27,6 +28,7 @@ import com.s84.smile.bean.SalesSlipHeadBean;
 import com.s84.smile.bean.SalesSlipSearchConditionBean;
 import com.s84.smile.bean.SalesSlipSearchResultBean;
 import com.s84.smile.service.AppointService;
+import com.s84.smile.service.CloseService;
 import com.s84.smile.service.CourseClassService;
 import com.s84.smile.service.CourseExtensionService;
 import com.s84.smile.service.CourseService;
@@ -61,6 +63,8 @@ public class SalesController {
 	private OptionmenuService optionmenuService;
 	@Autowired
 	private DiscountService discountService;
+	@Autowired
+	private CloseService closeService;
 
 	@InitBinder
 	public void initBinder(WebDataBinder binder) throws Exception {
@@ -143,6 +147,9 @@ public class SalesController {
 		SalesSlipBean salesSlipBean = salesSlipService.selectBySlipId(slipId);
 		modelAndView.addObject("salesSlipBean", salesSlipBean);
 		refreshSelect(salesSlipBean, modelAndView);
+		//締め伝票
+		CloseHeadBean closeHeadBean = closeService.selectBySalesSlipId(slipId);
+		modelAndView.addObject("closeHeadBean", closeHeadBean);
 		//売上伝票登録画面
 		modelAndView.setViewName("sales/entry");
 
@@ -379,5 +386,11 @@ public class SalesController {
 			discountList.add(discountService.selectAll());
 		}
 		modelAndView.addObject("discountList", discountList);
+		
+		//締め伝票
+		if (salesSlipBean.getSalesSlipHeadBean().getSlipId() != null) {
+			CloseHeadBean closeHeadBean = closeService.selectBySalesSlipId(salesSlipBean.getSalesSlipHeadBean().getSlipId());
+			modelAndView.addObject("closeHeadBean", closeHeadBean);
+		}
 	}
 }

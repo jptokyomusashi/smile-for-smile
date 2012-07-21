@@ -54,9 +54,9 @@ public class PaymentSlipHeadDaoImpl implements PaymentSlipHeadDao {
 	@Override
 	public List<PaymentSlipSearchResultBean> select(PaymentSlipSearchConditionBean paymentSlipSearchConditionBean) {
 		String query = "select h.slip_id, h.day, h.payee, " +
-					"         (select sum(unit_price*amount) from payment_slip_detail d where h.slip_id = d.slip_id) total_charge" +
-					"     from payment_slip_head h" +
-					"    where 1 = 1";
+						"         (select sum(unit_price*amount) from payment_slip_detail d where h.slip_id = d.slip_id) total_charge" +
+						"    from payment_slip_head h" +
+						"   where 1 = 1";
 	//日付FROM
 	if (paymentSlipSearchConditionBean.getDayFrom() != null) {
 		query += " and h.day >= '" + DateUtil.getDateFormat().format(paymentSlipSearchConditionBean.getDayFrom()) + "'";

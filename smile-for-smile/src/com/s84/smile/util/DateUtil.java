@@ -49,6 +49,26 @@ public class DateUtil {
 		return calendar.getTime();
 	}
 
+	public static Date getFirstDayOfMonth() {
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(getDay(0));
+		calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), 1, 0, 0, 0);
+
+		return calendar.getTime();
+	}
+
+	public static Date getLastDayOfMonth() {
+		Calendar calendar = Calendar.getInstance();
+		//当月の1日
+		calendar.setTime(getFirstDayOfMonth());
+		//翌月の1日
+		calendar.add(Calendar.MONTH, 1);
+		//当月の末日
+		calendar.add(Calendar.DATE, -1);
+		
+		return calendar.getTime();
+	}
+
 	private static int ceilByFive(int source) {
 		//5分単位に切り上げ
 		return source + 5 - (source % 5);

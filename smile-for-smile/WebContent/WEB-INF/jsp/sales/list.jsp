@@ -24,9 +24,12 @@
 				<th>伝票番号</th>
 				<th>日付</th>
 				<th>従業員</th>
-				<th>会員ID</th>
 				<th>イン</th>
 				<th>アウト</th>
+				<th>指名</th>
+				<th>会員ID</th>
+				<th>金額</th>
+				<th>締め</th>
 			</tr>
 			<c:forEach items="${salesSlipSearchResultList}" var="salesSlipSearchResult" varStatus="status">
 				<tr>
@@ -38,9 +41,19 @@
 					</td>
 					<td><fmt:formatDate value="${salesSlipSearchResult.day}" pattern="yyyy-MM-dd(E)"/></td>
 					<td><c:out value="${salesSlipSearchResult.name}"/></td>
-					<td><c:out value="${salesSlipSearchResult.memberId}"/></td>
 					<td><fmt:formatDate value="${salesSlipSearchResult.startTime}" pattern="HH:mm"/></td>
 					<td><fmt:formatDate value="${salesSlipSearchResult.endTime}" pattern="HH:mm"/></td>
+					<c:choose>
+						<c:when test="${empty salesSlipSearchResult.appointId}">
+							<td><c:out value=""/></td>
+						</c:when>
+						<c:otherwise>
+							<td align="center"><c:out value="○"/></td>
+						</c:otherwise>
+					</c:choose>
+					<td><c:out value="${salesSlipSearchResult.memberId}"/></td>
+					<td align="right"><fmt:formatNumber value="${salesSlipSearchResult.totalCharge}" type="CURRENCY" currencySymbol="" maxFractionDigits="0" minFractionDigits="0"/></td>
+					<td align="center"><c:if test="${not empty salesSlipSearchResult.closeSlipId}"><c:out value="○"/></c:if></td>
 				</tr>
 			</c:forEach>
 		</table>

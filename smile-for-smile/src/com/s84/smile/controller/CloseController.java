@@ -35,7 +35,7 @@ public class CloseController {
 	@Autowired
 	private SalesSlipService salesSlipService;
 	@Autowired
-	private Validator attendanceSearchValidator;
+	private Validator closeSearchValidator;
 
 	@InitBinder
 	public void initBinder(WebDataBinder binder) throws Exception {
@@ -75,7 +75,7 @@ public class CloseController {
 		ModelAndView modelAndView = new ModelAndView();
 
 		//バリデーション
-		this.attendanceSearchValidator.validate(closeSearchConditionBean, bindingResult);
+		this.closeSearchValidator.validate(closeSearchConditionBean, bindingResult);
 		if (bindingResult.hasErrors()) {
 			modelAndView.getModel().putAll(bindingResult.getModel());
 			modelAndView.setViewName("close/search");
