@@ -18,7 +18,6 @@
 		<h2>締め情報一覧</h2>
 
 		<fmt:formatDate value="${closeSearchConditionBean.day}" pattern="yyyy-MM-dd(E)"/>
-		<c:out value="の状況"/>
 		<table border="1">
 			<tr>
 				<th>No</th>
