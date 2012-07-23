@@ -99,9 +99,11 @@ public class CloseServiceImpl implements CloseService {
 			if (paymentCharge >= TAXLIMIT) {
 				tax = (int)(paymentCharge * (TAXRATE) / 100.0);
 			}
+			//最低保証額
+			int payment = (paymentCharge < MINPAYMENT) ? MINPAYMENT : paymentCharge;
 
 			//支払伝票
-			PaymentSlipBean paymentSlipBean = createPaymentSlipBean(salesSlipList, paymentCharge, tax);
+			PaymentSlipBean paymentSlipBean = createPaymentSlipBean(salesSlipList, payment, tax);
 			//支払伝票登録
 			int paymentSlipId = paymentSlipService.insert(paymentSlipBean, employeeBean);
 
@@ -110,11 +112,20 @@ public class CloseServiceImpl implements CloseService {
 			for (CloseBean closeBean: closeList) {
 				//支払伝票番号
 				closeBean.getCloseHeadBean().setPaymentSlipId(paymentSlipId);
-				//税額控除分反映
-				if (first && tax > 0) {
-					closeBean.getCloseHeadBean().setCourseChargeEmployee(closeBean.getCloseHeadBean().getCourseChargeEmployee() - tax);
-					closeBean.getCloseHeadBean().setCourseCharge(closeBean.getCloseHeadBean().getCourseCharge() + tax);
-					closeBean.getCloseHeadBean().setTax(tax);	
+				if (first) {
+					if (tax > 0) {
+						//税額控除
+						closeBean.getCloseHeadBean().setCourseChargeEmployee(closeBean.getCloseHeadBean().getCourseChargeEmployee() - tax);
+						closeBean.getCloseHeadBean().setCourseCharge(closeBean.getCloseHeadBean().getCourseCharge() + tax);
+						closeBean.getCloseHeadBean().setTax(tax);
+					}
+
+					if (paymentCharge < MINPAYMENT) {
+						//最低保証額
+						int balance = MINPAYMENT - paymentCharge;
+						closeBean.getCloseHeadBean().setCourseChargeEmployee(closeBean.getCloseHeadBean().getCourseChargeEmployee() + balance);
+						closeBean.getCloseHeadBean().setCourseCharge(closeBean.getCloseHeadBean().getCourseCharge() - balance);
+					}
 					first = false;
 				}
 				this.insert(closeBean);
@@ -308,7 +319,7 @@ public class CloseServiceImpl implements CloseService {
 		//コース料金(従業員)
 		closeHeadBean.setCourseChargeEmployee(MINPAYMENT);
 		//コース料金(店舗)
-		closeHeadBean.setCourseCharge(0);
+		closeHeadBean.setCourseCharge(-MINPAYMENT);
 
 		return closeHeadBean;
 	}
