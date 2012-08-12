@@ -7,24 +7,21 @@
 <script type="text/javascript" src="/css/script.js"></script>
 </head>
 <body>
-	<table>
-	<tr>
-	<td valign="top">
-	<jsp:include page="/WEB-INF/jsp/menu/menu.jsp"/>
-	</td>
+	<div>
+		<jsp:include page="/WEB-INF/jsp/header.jsp"/>
+	</div>
 
-	<td valign="top">
+	<div id="menu">
+		<jsp:include page="/WEB-INF/jsp/menu/menu.jsp"/>
+	</div>
+
+	<div id="main">
 	<form:form name="form" method="post">
 		<h2>支払伝票登録完了</h2>
 
-		<font color="blue">
-			<spring:message code="message.payment.entryfinish"/>
-		</font>
+		<spring:message code="message.payment.entryfinish"/>
 		<a href="" onclick="move('/payment/newEntry.html'); return false;">戻る</a>
 	</form:form>
-	
-	</td>
-	</tr>
-	</table>
+	</div>
 </body>
 </html>

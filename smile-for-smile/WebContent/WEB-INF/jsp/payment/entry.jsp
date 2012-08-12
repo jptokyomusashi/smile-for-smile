@@ -7,13 +7,16 @@
 <script type="text/javascript" src="/css/script.js"></script>
 </head>
 <body onload="calcChargeForPaymentSlipAll()">
-	<table>
-	<tr>
-	<td valign="top">
-	<jsp:include page="/WEB-INF/jsp/menu/menu.jsp"/>
-	</td>
 
-	<td valign="top">
+	<div>
+		<jsp:include page="/WEB-INF/jsp/header.jsp"/>
+	</div>
+
+	<div id="menu">
+		<jsp:include page="/WEB-INF/jsp/menu/menu.jsp"/>
+	</div>
+
+	<div id="main">
 	<form:form name="form" modelAttribute="paymentSlipBean" method="post" action="/payment/doEntry.html">
 		<c:choose>
 			<c:when test="${empty paymentSlipBean.paymentSlipHeadBean.slipId}"><h2>支払伝票新規登録</h2></c:when>
@@ -120,9 +123,6 @@
 		<br/>
 
 	</form:form>
-
-	</td>
-	</tr>
-	</table>
+	</div>
 </body>
 </html>

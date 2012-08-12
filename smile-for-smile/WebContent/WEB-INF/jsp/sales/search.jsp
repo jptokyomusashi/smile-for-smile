@@ -7,13 +7,15 @@
 <script type="text/javascript" src="/css/script.js"></script>
 </head>
 <body>
-	<table>
-	<tr>
-	<td valign="top">
-	<jsp:include page="/WEB-INF/jsp/menu/menu.jsp"/>
-	</td>
+	<div>
+		<jsp:include page="/WEB-INF/jsp/header.jsp"/>
+	</div>
 
-	<td valign="top">
+	<div id="menu">
+		<jsp:include page="/WEB-INF/jsp/menu/menu.jsp"/>
+	</div>
+
+	<div id="main">
 	<form:form name="form" modelAttribute="salesSlipSearchConditionBean" method="post" action="/sales/doSearch.html">
 		<h2>売上伝票検索</h2>
 
@@ -43,7 +45,6 @@
 				</td>
 			</tr>
 		</table>
-		<br/>
 		<input class="normal" type="submit" value="検索"/>
 		<br/>
 		<br/>
@@ -57,10 +58,7 @@
 			<form:errors path="dayTo"/>
 		</font>
 	</form:form>
-	
-	</td>
-	</tr>
-	</table>
+	</div>
 	<br/>
 </body>
 </html>

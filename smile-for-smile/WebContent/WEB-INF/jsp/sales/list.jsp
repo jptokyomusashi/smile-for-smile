@@ -7,13 +7,15 @@
 <script type="text/javascript" src="/css/script.js"></script>
 </head>
 <body>
-	<table>
-	<tr>
-	<td valign="top">
-	<jsp:include page="/WEB-INF/jsp/menu/menu.jsp"/>
-	</td>
+	<div>
+		<jsp:include page="/WEB-INF/jsp/header.jsp"/>
+	</div>
 
-	<td valign="top">
+	<div id="menu">
+		<jsp:include page="/WEB-INF/jsp/menu/menu.jsp"/>
+	</div>
+
+	<div id="main">
 	<form:form name="form" modelAttribute="salesSlipSearchResultBean" method="post" action="/sales/updateEntry.html">
 		<h2>売上伝票一覧</h2>
 
@@ -62,9 +64,6 @@
 		<br/>
 		<input type="button" class="normal" value="戻る" onclick="move('/sales/search_keep.html'); return false;"/>
 	</form:form>
-	
-	</td>
-	</tr>
-	</table>
+	</div>
 </body>
 </html>

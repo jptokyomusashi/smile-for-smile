@@ -12,13 +12,32 @@
 			<el-ignored>false</el-ignored>
 			<page-encoding>UTF-8</page-encoding>
 			<scripting-invalid>false</scripting-invalid>
-			<include-prelude>/WEB-INF/jsp/header.jsp</include-prelude>
+			<include-prelude>/WEB-INF/jsp/include.jsp</include-prelude>
 		</jsp-property-group>
 	</jsp-config>
+
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>
+			/WEB-INF/applicationContext.xml
+			/WEB-INF/applicationContext-security.xml
+		</param-value>
+	</context-param>
 
 	<session-config>
 		<session-timeout>180</session-timeout>
 	</session-config>
+
+<!--
+	<filter>
+		<filter-name>springSecurityFilterChain</filter-name>
+		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>springSecurityFilterChain</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+-->
 
 	<filter>
 		<filter-name>CharacterEncodingFilter</filter-name>
@@ -32,7 +51,6 @@
 			<param-value>true</param-value>
 		</init-param>
 	</filter>
-
 	<filter-mapping>
 		<filter-name>CharacterEncodingFilter</filter-name>
 		<url-pattern>/*</url-pattern>

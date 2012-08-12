@@ -7,13 +7,15 @@
 <script type="text/javascript" src="/css/script.js"></script>
 </head>
 <body>
-	<table>
-	<tr>
-	<td valign="top">
-	<jsp:include page="/WEB-INF/jsp/menu/menu.jsp"/>
-	</td>
+	<div>
+		<jsp:include page="/WEB-INF/jsp/header.jsp"/>
+	</div>
 
-	<td valign="top">
+	<div id="menu">
+		<jsp:include page="/WEB-INF/jsp/menu/menu.jsp"/>
+	</div>
+
+	<div id="main">
 	<form:form name="form" modelAttribute="salesSlipBean" method="post" action="/sales/doEntry.html">
 		<c:choose>
 			<c:when test="${empty salesSlipBean.salesSlipHeadBean.slipId}"><h2>売上伝票新規登録</h2></c:when>
@@ -198,9 +200,6 @@
 			</c:otherwise>
 		</c:choose>
 	</form:form>
-
-	</td>
-	</tr>
-	</table>
+	</div>
 </body>
 </html>

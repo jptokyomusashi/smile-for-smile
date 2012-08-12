@@ -7,14 +7,16 @@
 <script type="text/javascript" src="/css/script.js"></script>
 </head>
 <body>
-	<table>
-	<tr>
-	<td valign="top">
-	<jsp:include page="/WEB-INF/jsp/menu/menu.jsp"/>
-	</td>
+	<div>
+		<jsp:include page="/WEB-INF/jsp/header.jsp"/>
+	</div>
 
-	<td valign="top">
-	<form:form name="form" modelAttribute="paymentSlipSearchConditionBean" method="post" action="/payment/doSearch.html">
+	<div id="menu">
+		<jsp:include page="/WEB-INF/jsp/menu/menu.jsp"/>
+	</div>
+
+	<div id="main">
+		<form:form name="form" modelAttribute="paymentSlipSearchConditionBean" method="post" action="/payment/doSearch.html">
 		<h2>支払伝票検索</h2>
 
 		<table border="1">
@@ -29,7 +31,6 @@
 				</td>
 			</tr>
 		</table>
-		<br/>
 		<input class="normal" type="submit" value="検索"/>
 		<br/>
 		<br/>
@@ -43,10 +44,6 @@
 			<form:errors path="dayTo"/>
 		</font>
 	</form:form>
-	
-	</td>
-	</tr>
-	</table>
-	<br/>
+	</div>
 </body>
 </html>

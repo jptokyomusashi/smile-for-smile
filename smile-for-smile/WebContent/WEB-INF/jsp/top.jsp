@@ -7,18 +7,14 @@
 <script type="text/javascript" src="/css/script.js"></script>
 </head>
 <body>
-	<table>
-	<tr>
-	<td valign="top">
-	<jsp:include page="/WEB-INF/jsp/menu/menu.jsp"/>
-	</td>
 
-	<td valign="top">
-	<form:form name="form">
-		<h2>トップページ</h2>
-	</form:form>
-	</td>
-	</tr>
-	</table>
+	<div>
+		<jsp:include page="/WEB-INF/jsp/header.jsp"/>
+	</div>
+
+	<div id="menu">
+		<jsp:include page="/WEB-INF/jsp/menu/menu.jsp"/>
+	</div>
+
 </body>
 </html>

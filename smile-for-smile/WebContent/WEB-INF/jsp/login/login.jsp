@@ -6,32 +6,58 @@
 <title>ログイン</title>
 </head>
 <body>
-	<h2>SFSログイン画面</h2>
-	<form:form name="form" modelAttribute="employeeBean" method="post" action="/login/login.html">
-		<table>
-			<tr>
-				<td>従業員ID</td>
-				<td><form:input path="employeeId" maxlength="10"/></td>
-			</tr>
-			<tr>
-				<td>パスワード</td>
-				<td><form:password path="password" maxlength="10"/></td>
-			</tr>
-		</table>
-		<br/>
-		<input class="normal" type="submit" value="ログイン"/>
-		<br/>
-		<br/>
-		<font color="red">
-			<spring:hasBindErrors name="employeeBean">
-					<c:forEach items="${errors.globalErrors}" var="error">
-						<spring:message code="${error.code}"/>
-					</c:forEach>
-			</spring:hasBindErrors>
-			<form:errors path="employeeId"/>
-			<form:errors path="password"/>
-		</font>
+	<div>
+		<jsp:include page="/WEB-INF/jsp/header.jsp"/>
+	</div>
 
-	</form:form>
+	<div id="main">
+<%--
+		<form name="form" action="<c:url value="/j_spring_security_check"/>" method="post">
+			<table>
+				<tr>
+					<th>従業員ID</th>
+					<td><input type="text" name="j_username"/></td>
+				</tr>
+				<tr>
+					<th>パスワード</th>
+					<td><input type="password" name="j_password"/></td>
+				</tr>
+			</table>
+			<input type="submit" value="ログイン" />
+		</form>
+	
+		<br/>
+		<c:if test="${!empty param.failure}">
+			<font color="red">
+				<c:out value="従業員IDかパスワードに誤りがあります。"/>
+			</font>
+		</c:if>
+--%>
+		<form:form name="form" modelAttribute="employeeBean" method="post" action="/login/login.html">
+			<table>
+				<tr>
+					<th>従業員ID</th>
+					<td><form:input path="employeeId" maxlength="10"/></td>
+				</tr>
+				<tr>
+					<th>パスワード</th>
+					<td><form:password path="password" maxlength="10"/></td>
+				</tr>
+			</table>
+			<input class="normal" type="submit" value="ログイン"/>
+			<br/>
+			<br/>
+			<font color="red">
+				<spring:hasBindErrors name="employeeBean">
+						<c:forEach items="${errors.globalErrors}" var="error">
+							<spring:message code="${error.code}"/>
+						</c:forEach>
+				</spring:hasBindErrors>
+				<form:errors path="employeeId"/>
+				<form:errors path="password"/>
+			</font>
+		</form:form>
+
+	</div>
 </body>
 </html>

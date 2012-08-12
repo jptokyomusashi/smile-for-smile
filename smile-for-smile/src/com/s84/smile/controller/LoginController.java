@@ -28,11 +28,13 @@ public class LoginController {
 		return new EmployeeBean();
 	}
 
+	//@RequestMapping(value="/login.html", method = RequestMethod.GET)
 	@RequestMapping(method = RequestMethod.GET)
 	public String toLoginView() {
 		return "login/login";
 	}
 
+	//@RequestMapping(value="/login/doLogin.html", method = RequestMethod.POST)
 	@RequestMapping(method = RequestMethod.POST)
 	public ModelAndView onSubmit(EmployeeBean employeeBean, BindingResult bindingResult, HttpSession session) {
 		ModelAndView modelAndView = new ModelAndView();
