@@ -16,6 +16,11 @@ insert into code values('weekday', 4, '金曜日');
 insert into code values('weekday', 5, '土曜日');
 insert into code values('weekday', 6, '日曜日');
 
+insert into code values('resigned', 0, '');
+insert into code values('resigned', 1, '退職');
+insert into code values('authority', 1, '従業員');
+insert into code values('authority', 10, '管理者');
+
 drop table employee;
 create table employee (
 	employee_id varchar(10),
@@ -38,6 +43,7 @@ insert into employee values('napa', 'password', 'ナパー', null, 50, 0, 5, nul
 insert into employee values('mika', 'password', 'ミカ', null, 50, 0, 6, null, now(),'smile');
 insert into employee values('dao', 'password', 'ダォ', null, 50, 0, 7, null, now(),'smile');
 insert into employee values('nana', 'password', 'ナナ', null, 50, 0, 8, null, now(),'smile');
+insert into employee values('yuki', 'password', 'ゆき', null, 50, 0, 9, null, now(),'smile');
 
 drop table course_class;
 create table course_class (
@@ -325,3 +331,15 @@ create table close_discount (
 	index idx_slip_id(slip_id),
 	index idx_slip_id_detail_id(slip_id, detail_id)
 );
+
+drop table mail_customer;
+create table mail_customer (
+	id int auto_increment,
+	name varchar(20),
+	mailaddress varchar(100),
+	deleted tinyint,
+	up_day datetime not null,
+	up_employee_id varchar(10) not null,
+	primary key (id)
+);
+

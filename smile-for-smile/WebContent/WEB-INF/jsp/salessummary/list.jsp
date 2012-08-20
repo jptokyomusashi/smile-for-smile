@@ -20,7 +20,7 @@
 		<h2>売上集計表</h2>
 
 		<c:out value="${size}件"/>
-		<table border="1">
+		<table>
 			<tr>
 				<th rowspan="2">No</th>
 				<th rowspan="2">日付</th>
@@ -85,6 +85,11 @@
 				<td align="right" colspan="7"><c:out value="合計(割引考慮)"/></td>
 				<td align="right" colspan="2"><fmt:formatNumber value="${totalChargeEmployee - totalDiscountEmployee}" type="CURRENCY" currencySymbol="" maxFractionDigits="0" minFractionDigits="0"/></td>
 				<td align="right" colspan="2"><fmt:formatNumber value="${totalChargeShop - totalDiscountShop}" type="CURRENCY" currencySymbol="" maxFractionDigits="0" minFractionDigits="0"/></td>
+				<td colspan="3"></td>
+			</tr>
+			<tr>
+				<td align="right" colspan="7"><c:out value="総合計(割引考慮)"/></td>
+				<td align="right" colspan="4"><fmt:formatNumber value="${totalChargeEmployee - totalDiscountEmployee + totalChargeShop - totalDiscountShop}" type="CURRENCY" currencySymbol="" maxFractionDigits="0" minFractionDigits="0"/></td>
 				<td colspan="3"></td>
 			</tr>
 		</table>

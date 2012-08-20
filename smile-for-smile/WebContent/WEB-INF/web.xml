@@ -16,6 +16,11 @@
 		</jsp-property-group>
 	</jsp-config>
 
+	<session-config>
+		<session-timeout>180</session-timeout>
+	</session-config>
+
+<!--
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
 		<param-value>
@@ -24,11 +29,6 @@
 		</param-value>
 	</context-param>
 
-	<session-config>
-		<session-timeout>180</session-timeout>
-	</session-config>
-
-<!--
 	<filter>
 		<filter-name>springSecurityFilterChain</filter-name>
 		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
@@ -38,6 +38,22 @@
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
 -->
+	<filter>
+		<filter-name>sessionCheck</filter-name>
+		<filter-class>com.s84.smile.filter.SessionCheckFilter</filter-class>
+		<init-param>
+			<param-name>ignore</param-name>
+			<param-value>/login,/mailmagazine</param-value>
+		</init-param>
+		<init-param>
+			<param-name>forward</param-name>
+			<param-value>/sessionTimeout.jsp</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>sessionCheck</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
 
 	<filter>
 		<filter-name>CharacterEncodingFilter</filter-name>

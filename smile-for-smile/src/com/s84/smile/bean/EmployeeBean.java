@@ -8,8 +8,8 @@ public class EmployeeBean {
 	private String password;
 	private String name;
 	private String email;
-	private int share;
-	private int authority;
+	private Integer share;
+	private Integer authority;
 	private Integer resigned;
 	private Integer sort;
 	private Date upDay;
@@ -64,19 +64,19 @@ public class EmployeeBean {
 		this.email = email;
 	}
 
-	public int getShare() {
+	public Integer getShare() {
 		return share;
 	}
 
-	public void setShare(int share) {
+	public void setShare(Integer share) {
 		this.share = share;
 	}
 
-	public int getAuthority() {
+	public Integer getAuthority() {
 		return authority;
 	}
 
-	public void setAuthority(int authority) {
+	public void setAuthority(Integer authority) {
 		this.authority = authority;
 	}
 

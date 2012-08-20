@@ -33,5 +33,13 @@
 				<li><a href="" onclick="move('/mail/setting.html'); return false;">設定</a></li>
 			</ul>
 		</li>
+
+		<li><a href="#"><c:out value="マスタ管理"/></a>
+			<ul>
+				<li><a href="" onclick="move('/employee/newEntry.html'); return false;">従業員新規登録</a></li>
+				<li><a href="" onclick="move('/employee/list.html'); return false;">従業員一覧</a></li>
+			</ul>
+		</li>
+
 	</ul>
 </form:form>

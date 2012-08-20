@@ -8,7 +8,9 @@ import org.springframework.stereotype.Service;
 
 import com.s84.smile.bean.CloseSearchResultBean;
 import com.s84.smile.bean.EmployeeBean;
+import com.s84.smile.bean.EmployeeForMaintenanceBean;
 import com.s84.smile.dao.EmployeeDao;
+import com.s84.smile.util.DateUtil;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
@@ -32,17 +34,31 @@ public class EmployeeServiceImpl implements EmployeeService {
 	}
 
 	@Override
+	public List<EmployeeForMaintenanceBean> selectAllForMaintenance() {
+		return employeeDao.selectAllForMaintenance();		
+	}
+
+	@Override
 	public List<CloseSearchResultBean> selectAttendanceClose(Date day) {
 		return employeeDao.selectAttendanceClose(day);		
 	}
 
 	@Override
-	public void insert(EmployeeBean employeeBean) {
+	public void insert(EmployeeBean employeeBean, String loginEmployeeId) {
+		employeeBean.setUpDay(DateUtil.getDay(0));
+		employeeBean.setUpEmployeeId(loginEmployeeId);
 		employeeDao.insert(employeeBean);
 	}
 
 	@Override
-	public void update(EmployeeBean employeeBean) {
+	public void update(EmployeeBean employeeBean, String loginEmployeeId) {
+		employeeBean.setUpDay(DateUtil.getDay(0));
+		employeeBean.setUpEmployeeId(loginEmployeeId);
 		employeeDao.update(employeeBean);
+	}
+
+	@Override
+	public void delete(EmployeeBean employeeBean) {
+		employeeDao.delete(employeeBean);
 	}
 }
