@@ -9,20 +9,19 @@
 <body>
 
 	<div id="main">
-	<form:form name="form">
+	<form:form name="form" modelAttribute="mailCustomerBean">
 		<h2>メルマガ登録</h2>
 
 		<table>
 			<tr>
 				<th>メールアドレス</th>
-				<td><input type="text"/></td>
+				<td><form:input path="mailAddress" maxlength="100" size="80"/></td>
 			</tr>
 		</table>
-		<input type="button" class="normal" value="登録" onclick="move('/mailmagazine/doEntry.html'); return false;"/>
-		<input type="button" class="normal" value="解除" onclick="move('/mailmagazine/doEelete.html'); return false;"/>
-		<input type="button" class="normal" value="送信テスト" onclick="move('/mailmagazine/doTest.html'); return false;"/>
-
+		<input type="button" class="normal" value="登録" onclick="moveForForm('/mailmagazine/doEntry.html'); return false;"/>
+		<input type="button" class="normal" value="解除" onclick="moveForForm('/mailmagazine/doDelete.html'); return false;"/>
 	</form:form>
 	</div>
+	<h2><font color="blue"><c:out value="${MESSAGE}"/></font></h2>
 </body>
 </html>

@@ -94,7 +94,7 @@
 		<form:hidden path="upEmployeeId"/>
 		<input class="normal" type="submit" value="登録"/>
 		<c:if test="${!empty employeeBean.upEmployeeId}">
-			<input type="button" class="normal" value="削除" onclick="moveForForm('/employee/doDelete.html'); return false;"/>
+			<%--<input type="button" class="normal" value="削除" onclick="moveForForm('/employee/doDelete.html'); return false;"/>--%>
 			<input type="button" class="normal" value="戻る" onclick="moveForForm('/employee/list.html'); return false;"/>
 		</c:if>
 	</form:form>
