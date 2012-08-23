@@ -14,6 +14,8 @@ body {
 	color:#000;
 }
 
+textarea{font-size:12px;}
+
 br {
 	letter-spacing:normal;
 }

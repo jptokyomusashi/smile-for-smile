@@ -32,7 +32,7 @@ public class EmployeeDaoImpl implements EmployeeDao {
 													"         case when c.day is null then false else true end closed from employee e" +
 													"    left outer join (select day, employee_id from close_head group by day, employee_id) c" +
 													"      on e.employee_id = c.employee_id and c.day = ?" +
-													"   where authority < 10 and resigned is null order by sort";
+													"   where authority < 10 and resigned = 0 order by sort";
 	private static final String INSERT = "insert into employee values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 	private static final String UPDATE = "update employee set password = ?, name = ?, email = ?, share = ?, authority = ?, sort = ?, resigned = ?, up_day = ?, up_employee_id = ? where employee_id = ?";
 	private static final String DELETE = "delete from employee where employee_id = ?";

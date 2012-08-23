@@ -25,7 +25,7 @@
 			</tr>
 			<tr>
 				<th>本文</th>
-				<td><form:textarea path="body" cols="50" rows="20"/><font color="red"><form:errors path="body"/></font></td>
+				<td><form:textarea path="body" cols="70" rows="20"/><font color="red"><form:errors path="body"/></font></td>
 			</tr>
 		</table>
 		<input class="normal" type="submit" value="送信"/>
