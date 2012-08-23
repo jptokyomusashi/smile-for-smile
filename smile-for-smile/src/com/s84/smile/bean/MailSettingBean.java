@@ -3,9 +3,27 @@ package com.s84.smile.bean;
 public class MailSettingBean {
 
 	private String smtp;
-	private String port = "25";
+	private String port;
 	private String sendAddress;
 	private String sendName;
+	private String userId;
+	private String password;
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
 
 	public String getSmtp() {
 		return smtp;

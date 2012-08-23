@@ -45,4 +45,9 @@ public class MailCustomerServiceImpl implements MailCustomerService {
 	public MailCustomerBean selectByPrimarykey(int id) {
 		return mailCustomerDao.selectByPrimarykey(id);
 	}
+
+	@Override
+	public List<MailCustomerBean> selectNotDeleted() {
+		return mailCustomerDao.selectNotDeleted();
+	}
 }

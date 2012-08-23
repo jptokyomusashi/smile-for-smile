@@ -30,24 +30,31 @@ public class MailmagazineController {
 	@RequestMapping(value="/mailmagazine/doEntry.html", method = RequestMethod.POST)
 	public ModelAndView doEntry(MailCustomerBean mailCustomerBean) {
 		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("/mailmagazine/entry");
 		
+		String check = "^[_A-Za-z0-9-\\+\\*\\.]+(\\.[_A-Za-z0-9-\\+\\*\\.]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[_A-Za-z0-9-]+)";
 		String mailAddress = mailCustomerBean.getMailAddress().trim();
 
 		if (!"".equals(mailAddress)) {
 			//バリデーション
+			if (!mailAddress.matches(check)) {
+				modelAndView.addObject("MESSAGE", "メールアドレスの形式ではありません。");
+				return modelAndView;
+			}
+
 			List<MailCustomerBean> mailCustomerBeanList = mailCustomerService.selectByMailAddress(mailAddress);
 			if (mailCustomerBeanList.size() > 0) {
 				//重複
 				modelAndView.addObject("MESSAGE", "既に登録されています。");
-				
-			} else {
-				//登録
-				mailCustomerService.insert(mailCustomerBean);
-				modelAndView.addObject("MESSAGE", "登録が完了しました。");
+				return modelAndView;
 			}
+
+			//登録
+			mailCustomerBean.setMailAddress(mailAddress);
+			mailCustomerService.insert(mailCustomerBean);
+			modelAndView.addObject("MESSAGE", "登録が完了しました。");
 		}
 
-		modelAndView.setViewName("/mailmagazine/entry");
 		return modelAndView;
 	}
 

@@ -16,12 +16,19 @@
 	</div>
 
 	<div id="main">
-	<form:form name="form" method="post" action="/mail/send.html">
+	<form:form name="form" method="post" modelAttribute="mailSendBean" action="/mail/send.html">
 		<h2>メルマガ作成</h2>
-
-		<textarea cols="50" rows="20"></textarea>
-
-		<%--<input class="normal" type="submit" value="送信"/>--%>
+		<table>
+			<tr>
+				<th>件名</th>
+				<td><form:input path="title" size="50"/><font color="red"><form:errors path="title"/></font></td>
+			</tr>
+			<tr>
+				<th>本文</th>
+				<td><form:textarea path="body" cols="50" rows="20"/><font color="red"><form:errors path="body"/></font></td>
+			</tr>
+		</table>
+		<input class="normal" type="submit" value="送信"/>
 	</form:form>
 	</div>
 </body>

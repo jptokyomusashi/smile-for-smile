@@ -348,5 +348,7 @@ create table mail_setting (
 	smtp varchar(100),
 	port varchar(5),
 	sendaddress varchar(100),
-	sendname varchar(20)
+	sendname varchar(20),
+	userid varchar(20),
+	password varchar(20)
 );

@@ -28,6 +28,14 @@
 					<td><form:input path="port" maxlength="5"/></td>
 				</tr>
 				<tr>
+					<th>ユーザID(SMTPサーバ認証用)※</th>
+					<td><form:input path="userId" maxlength="20" size="20"/></td>
+				</tr>
+				<tr>
+					<th>パスワード(SMTPサーバ認証用)※</th>
+					<td><form:input path="password" maxlength="20" size="20"/></td>
+				</tr>
+				<tr>
 					<th>送信メールアドレス※</th>
 					<td><form:input path="sendAddress" maxlength="50" size="50"/></td>
 				</tr>
@@ -38,7 +46,7 @@
 			</table>
 			<input class="normal" type="submit" value="登録"/>
 		</form:form>
-		<c:out value="${MESSAGE}"/>
+		<h3><font color="blue"><c:out value="${MESSAGE}"/></font></h3>
 	</div>
 </body>
 </html>

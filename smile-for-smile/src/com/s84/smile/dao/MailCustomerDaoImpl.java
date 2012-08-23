@@ -19,6 +19,7 @@ public class MailCustomerDaoImpl implements MailCustomerDao {
 	private static final String UPDATE = "update mail_customer set name = ?, deleted = ?, up_day = ?, up_employee_id = ? where id = ?";
 	private static final String SELECT_BY_MAILADDRESS = "select * from mail_customer where mailaddress = ? and deleted is null";
 	private static final String SELECT_ALL = "select * from mail_customer order by id";
+	private static final String SELECT_NOT_DELETED = "select * from mail_customer where deleted is null";
 	private static final String SELECT_BY_PRIMARYKEY = "select * from mail_customer where id = ?";
 
 	private JdbcTemplate template;
@@ -55,5 +56,11 @@ public class MailCustomerDaoImpl implements MailCustomerDao {
 	public MailCustomerBean selectByPrimarykey(int id) {
 		RowMapper<MailCustomerBean> mapper = new BeanPropertyRowMapper<MailCustomerBean>(MailCustomerBean.class);
 		return this.template.queryForObject(SELECT_BY_PRIMARYKEY, mapper, id);	
+	}
+
+	@Override
+	public List<MailCustomerBean> selectNotDeleted() {
+		RowMapper<MailCustomerBean> mapper = new BeanPropertyRowMapper<MailCustomerBean>(MailCustomerBean.class);
+		return this.template.query(SELECT_NOT_DELETED, mapper);
 	}
 }

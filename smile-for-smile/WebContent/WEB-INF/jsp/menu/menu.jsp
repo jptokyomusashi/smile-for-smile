@@ -30,6 +30,7 @@
 			<ul>
 				<li><a href="" onclick="move('/mail/mail.html'); return false;">メルマガ作成</a></li>
 				<li><a href="" onclick="move('/mail/list.html'); return false;">登録アドレス確認</a></li>
+				<li><a href="https://smile-for-smile.cloudfoundry.com/mailmagazine/entry.html" target="_blank">メルマガ登録</a></li>
 				<li><a href="" onclick="move('/mail/setting.html'); return false;">設定</a></li>
 			</ul>
 		</li>

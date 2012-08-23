@@ -13,7 +13,7 @@ import com.s84.smile.bean.MailSettingBean;
 @Repository
 public class MailSettingDaoImpl implements MailSettingDao {
 
-	private static final String INSERT = "insert into mail_setting values(?, ?, ?, ?)";
+	private static final String INSERT = "insert into mail_setting values(?, ?, ?, ?, ?, ?)";
 	private static final String DELETE = "delete from mail_setting";
 	private static final String SELECT = "select * from mail_setting";
 
@@ -26,7 +26,8 @@ public class MailSettingDaoImpl implements MailSettingDao {
 
 	@Override
 	public void insert(MailSettingBean mailSettingBean) {
-		this.template.update(INSERT, mailSettingBean.getSmtp(), mailSettingBean.getPort(), mailSettingBean.getSendAddress(), mailSettingBean.getSendName());
+		this.template.update(INSERT, mailSettingBean.getSmtp(), mailSettingBean.getPort(), mailSettingBean.getSendAddress(), mailSettingBean.getSendName(),
+				mailSettingBean.getUserId(), mailSettingBean.getPassword());
 	}
 
 	@Override

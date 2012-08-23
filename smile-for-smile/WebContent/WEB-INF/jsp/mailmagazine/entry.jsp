@@ -21,7 +21,7 @@
 		<input type="button" class="normal" value="登録" onclick="moveForForm('/mailmagazine/doEntry.html'); return false;"/>
 		<input type="button" class="normal" value="解除" onclick="moveForForm('/mailmagazine/doDelete.html'); return false;"/>
 	</form:form>
+	<h3><font color="blue"><c:out value="${MESSAGE}"/></font></h3>
 	</div>
-	<h2><font color="blue"><c:out value="${MESSAGE}"/></font></h2>
 </body>
 </html>

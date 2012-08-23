@@ -3,14 +3,17 @@ package com.s84.smile.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.s84.smile.bean.MailCustomerBean;
+import com.s84.smile.bean.MailSendBean;
 import com.s84.smile.bean.MailSettingBean;
 import com.s84.smile.service.MailCustomerService;
 import com.s84.smile.service.MailSettingService;
+import com.s84.smile.validator.MailSendValidator;
 
 @Controller
 public class MailController {
@@ -19,18 +22,37 @@ public class MailController {
 	MailCustomerService mailCustomerService;
 	@Autowired
 	MailSettingService mailSettingService;
-
+	@Autowired
+	com.s84.smile.service.MailSendService mailSendService;
+	@Autowired
+	MailSendValidator mailSendValidator;
+	
 	@RequestMapping(value="/mail/mail.html", method = RequestMethod.POST)
 	public ModelAndView mail() {
 		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.addObject("mailSendBean", new MailSendBean());
 		modelAndView.setViewName("mail/mail");
 		return modelAndView;
 	}
 
 	@RequestMapping(value="/mail/send.html", method = RequestMethod.POST)
-	public ModelAndView send() {
-		//mailSendService.send("タイトル", "本文");
+	public ModelAndView send(MailSendBean mailSendBean, BindingResult bindingResult) {
 		ModelAndView modelAndView = new ModelAndView();
+
+		//バリデーション
+		this.mailSendValidator.validate(mailSendBean, bindingResult);
+		if (bindingResult.hasErrors()) {
+			modelAndView.getModel().putAll(bindingResult.getModel());
+			modelAndView.setViewName("mail/mail");
+			return modelAndView;
+		}
+
+		try {
+			mailSendService.send(mailSendBean.getTitle(), mailSendBean.getBody());
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+
 		modelAndView.setViewName("mail/mail");
 		return modelAndView;
 	}
