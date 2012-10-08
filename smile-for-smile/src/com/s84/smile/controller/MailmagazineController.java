@@ -62,7 +62,7 @@ public class MailmagazineController {
 	public ModelAndView doDelete(MailCustomerBean mailCustomerBean) {
 		ModelAndView modelAndView = new ModelAndView();
 		
-		String mailAddress = mailCustomerBean.getMailAddress().trim();
+		String mailAddress = mailCustomerBean.getMailAddressForDelete().trim();
 
 		if (!"".equals(mailAddress)) {
 			List<MailCustomerBean> list = mailCustomerService.selectByMailAddress(mailAddress);

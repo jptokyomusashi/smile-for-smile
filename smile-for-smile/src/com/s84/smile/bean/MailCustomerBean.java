@@ -7,9 +7,26 @@ public class MailCustomerBean {
 	private int id;
 	private String name;
 	private String mailAddress;
+	private String mailAddressForDelete;
 	private Integer deleted;
 	private Date upDay;
 	private String upEmployeeId;
+
+	public String getMailAddress() {
+		return mailAddress;
+	}
+
+	public void setMailAddress(String mailAddress) {
+		this.mailAddress = mailAddress;
+	}
+
+	public String getMailAddressForDelete() {
+		return mailAddressForDelete;
+	}
+
+	public void setMailAddressForDelete(String mailAddressForDelete) {
+		this.mailAddressForDelete = mailAddressForDelete;
+	}
 
 	public int getId() {
 		return id;
@@ -25,14 +42,6 @@ public class MailCustomerBean {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public String getMailAddress() {
-		return mailAddress;
-	}
-
-	public void setMailAddress(String mailAddress) {
-		this.mailAddress = mailAddress;
 	}
 
 	public Integer getDeleted() {

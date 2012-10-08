@@ -9,19 +9,34 @@
 <body>
 
 	<div id="main">
-	<form:form name="form" modelAttribute="mailCustomerBean">
 		<h2>メルマガ登録</h2>
+		<form:form name="form" modelAttribute="mailCustomerBean" action="/mailmagazine/doEntry.html">
+			<fieldset>
+			<legend>登録</legend>
+			<table>
+				<tr>
+					<th>メールアドレス</th>
+					<td><form:input path="mailAddress" maxlength="100" size="80"/></td>
+				</tr>
+			</table>
+			<input type="submit" value="登録"/>
+			</fieldset>
+		</form:form>
 
-		<table>
-			<tr>
-				<th>メールアドレス</th>
-				<td><form:input path="mailAddress" maxlength="100" size="80"/></td>
-			</tr>
-		</table>
-		<input type="button" class="normal" value="登録" onclick="moveForForm('/mailmagazine/doEntry.html'); return false;"/>
-		<input type="button" class="normal" value="解除" onclick="moveForForm('/mailmagazine/doDelete.html'); return false;"/>
-	</form:form>
-	<h3><font color="blue"><c:out value="${MESSAGE}"/></font></h3>
+		<br/>
+		<form:form name="form" modelAttribute="mailCustomerBean" action="/mailmagazine/doDelete.html">
+			<fieldset>
+			<legend>解除</legend>
+			<table>
+				<tr>
+					<th>メールアドレス</th>
+					<td><form:input path="mailAddressForDelete" maxlength="100" size="80"/></td>
+				</tr>
+			</table>
+			<input type="submit" value="解除"/>
+			</fieldset>
+		</form:form>
 	</div>
+	<h3><font color="blue"><c:out value="${MESSAGE}"/></font></h3>
 </body>
 </html>
