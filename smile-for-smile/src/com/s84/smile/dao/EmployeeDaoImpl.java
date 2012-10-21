@@ -22,6 +22,7 @@ public class EmployeeDaoImpl implements EmployeeDao {
 	//private static final String SELECT_BY_EMPLOYEEID = "select * from employee where employee_id = ? and resigned = 0";
 	private static final String SELECT_BY_EMPLOYEEID = "select * from employee where employee_id = ?";
 	private static final String SELECT_ALL = "select * from employee where authority < 10 order by sort";
+	private static final String SELECT_MANAGER = "select * from employee where authority = 10 order by sort";	
 	private static final String SELECT_ALL_FOR_MAINTENANCE = "select e.*, a.label resigned_name, b.label authority_name from employee e" +
 																		"  left outer join code a" +
 																		"    on a.category = 'resigned' and a.code = e.resigned" +
@@ -60,6 +61,12 @@ public class EmployeeDaoImpl implements EmployeeDao {
 	public List<EmployeeBean> selectAll() {
 		RowMapper<EmployeeBean> mapper = new BeanPropertyRowMapper<EmployeeBean>(EmployeeBean.class);
 		return this.template.query(SELECT_ALL, mapper);
+	}
+
+	@Override
+	public List<EmployeeBean> selectManager() {
+		RowMapper<EmployeeBean> mapper = new BeanPropertyRowMapper<EmployeeBean>(EmployeeBean.class);
+		return this.template.query(SELECT_MANAGER, mapper);
 	}
 
 	@Override

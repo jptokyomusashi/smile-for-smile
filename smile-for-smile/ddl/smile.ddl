@@ -18,8 +18,10 @@ insert into code values('weekday', 6, '日曜日');
 
 insert into code values('resigned', 0, '');
 insert into code values('resigned', 1, '退職');
+
 insert into code values('authority', 1, '従業員');
 insert into code values('authority', 10, '管理者');
+
 
 drop table employee;
 create table employee (

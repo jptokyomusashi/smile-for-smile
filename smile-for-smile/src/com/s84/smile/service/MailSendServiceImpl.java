@@ -1,7 +1,6 @@
 package com.s84.smile.service;
 
 import java.util.Date;
-import java.util.List;
 import java.util.Properties;
 
 import javax.mail.Authenticator;
@@ -15,7 +14,6 @@ import javax.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.s84.smile.bean.MailCustomerBean;
 import com.s84.smile.bean.MailSettingBean;
 
 @Service
@@ -27,7 +25,7 @@ public class MailSendServiceImpl implements MailSendService {
 	MailCustomerService mailCustomerService;
 
 	@Override
-	public void send(String title, String body) throws Exception {
+	public void send(String title, String body, InternetAddress[] from, InternetAddress[] to, InternetAddress[] cc, InternetAddress[] bcc) throws Exception {
 		MailSettingBean mailSettingBean = mailSettingService.select();
 		MyAuth myAuth = new MyAuth();
 		myAuth.userId = mailSettingBean.getUserId();
@@ -40,17 +38,14 @@ public class MailSendServiceImpl implements MailSendService {
 		Session session = Session.getInstance(prop, myAuth);
 
 		MimeMessage msg = new MimeMessage(session);
-		InternetAddress[] from = {new InternetAddress(mailSettingBean.getSendAddress(), mailSettingBean.getSendName())};
-		msg.addFrom(from);
-		
-		List<MailCustomerBean> mailCustomerList = mailCustomerService.selectNotDeleted();
-		InternetAddress[] bcc = new InternetAddress[mailCustomerList.size()];
-		for (int i = 0; i < mailCustomerList.size(); i++) {
-			bcc[i] = new InternetAddress(mailCustomerList.get(i).getMailAddress());
+		msg.addFrom(from);	
+		msg.setRecipients(Message.RecipientType.TO, to);
+		if (cc != null) {
+			msg.setRecipients(Message.RecipientType.CC, bcc);
 		}
-		msg.setRecipients(Message.RecipientType.BCC, bcc);
-	
-		msg.setRecipients(Message.RecipientType.TO, from);
+		if (bcc != null) {
+			msg.setRecipients(Message.RecipientType.BCC, bcc);
+		}
 		msg.setSubject(title, "ISO-2022-JP");
 		msg.setText(body, "ISO-2022-JP");
 		msg.setSentDate(new Date());

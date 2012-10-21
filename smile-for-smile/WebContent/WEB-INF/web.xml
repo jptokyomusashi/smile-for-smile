@@ -43,7 +43,7 @@
 		<filter-class>com.s84.smile.filter.SessionCheckFilter</filter-class>
 		<init-param>
 			<param-name>ignore</param-name>
-			<param-value>/login,/mailmagazine</param-value>
+			<param-value>/login,/mailmagazine,/reserve</param-value>
 		</init-param>
 		<init-param>
 			<param-name>forward</param-name>

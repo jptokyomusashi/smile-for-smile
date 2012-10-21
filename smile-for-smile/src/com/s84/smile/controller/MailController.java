@@ -1,5 +1,9 @@
 package com.s84.smile.controller;
 
+import java.util.List;
+
+import javax.mail.internet.InternetAddress;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Controller;
@@ -12,6 +16,7 @@ import com.s84.smile.bean.MailCustomerBean;
 import com.s84.smile.bean.MailSendBean;
 import com.s84.smile.bean.MailSettingBean;
 import com.s84.smile.service.MailCustomerService;
+import com.s84.smile.service.MailSendService;
 import com.s84.smile.service.MailSettingService;
 import com.s84.smile.validator.MailSendValidator;
 
@@ -19,14 +24,14 @@ import com.s84.smile.validator.MailSendValidator;
 public class MailController {
 
 	@Autowired
-	MailCustomerService mailCustomerService;
+	private MailCustomerService mailCustomerService;
 	@Autowired
-	MailSettingService mailSettingService;
+	private MailSettingService mailSettingService;
 	@Autowired
-	com.s84.smile.service.MailSendService mailSendService;
+	private MailSendService mailSendService;
 	@Autowired
-	MailSendValidator mailSendValidator;
-	
+	private MailSendValidator mailSendValidator;
+
 	@RequestMapping(value="/mail/mail.html", method = RequestMethod.POST)
 	public ModelAndView mail() {
 		ModelAndView modelAndView = new ModelAndView();
@@ -47,8 +52,23 @@ public class MailController {
 			return modelAndView;
 		}
 
+		//メール送信
 		try {
-			mailSendService.send(mailSendBean.getTitle(), mailSendBean.getBody());
+			//from
+			MailSettingBean mailSettingBean = mailSettingService.select();
+			InternetAddress[] from = {new InternetAddress(mailSettingBean.getSendAddress(), mailSettingBean.getSendName())};
+			//to
+			InternetAddress[] to = from;
+			//bcc
+			List<MailCustomerBean> mailCustomerList = mailCustomerService.selectNotDeleted();
+			InternetAddress[] bcc = new InternetAddress[mailCustomerList.size()];
+			for (int i = 0; i < mailCustomerList.size(); i++) {
+				bcc[i] = new InternetAddress(mailCustomerList.get(i).getMailAddress());
+			}
+			//cc
+			InternetAddress[] cc = null;
+			//送信
+			mailSendService.send(mailSendBean.getTitle(), mailSendBean.getBody(), from, to, cc, bcc);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}

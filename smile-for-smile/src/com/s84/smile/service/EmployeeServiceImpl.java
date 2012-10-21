@@ -34,6 +34,11 @@ public class EmployeeServiceImpl implements EmployeeService {
 	}
 
 	@Override
+	public List<EmployeeBean> selectManager() {
+		return employeeDao.selectManager();
+	}
+
+	@Override
 	public List<EmployeeForMaintenanceBean> selectAllForMaintenance() {
 		return employeeDao.selectAllForMaintenance();		
 	}

@@ -12,6 +12,7 @@ public interface EmployeeService {
 	public EmployeeBean selectByEmployeeIdAndPassword(String employeeId, String password);
 	public EmployeeBean selectByEmployeeId(String employeeId);
 	public List<EmployeeBean> selectAll();
+	public List<EmployeeBean> selectManager();
 	public List<EmployeeForMaintenanceBean> selectAllForMaintenance();
 	public List<CloseSearchResultBean> selectAttendanceClose(Date day);
 	public void insert(EmployeeBean employeeBean, String loginEmployeeId);
