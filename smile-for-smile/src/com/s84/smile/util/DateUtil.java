@@ -8,10 +8,15 @@ import java.util.Date;
 public class DateUtil {
 
 	private static DateFormat dateFormat = new  SimpleDateFormat("yyyy-MM-dd");
+	private static DateFormat dateFormat2 = new  SimpleDateFormat("yyyy-MM-dd(E)");
 	private static DateFormat timeFormat = new  SimpleDateFormat("HH:mm");
 
 	public static DateFormat getDateFormat() {
 		return dateFormat;
+	}
+
+	public static DateFormat getDateFormat2() {
+		return dateFormat2;
 	}
 
 	public static DateFormat getTimeFormat() {

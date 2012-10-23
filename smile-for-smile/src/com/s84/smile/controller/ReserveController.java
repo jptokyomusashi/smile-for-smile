@@ -77,10 +77,12 @@ public class ReserveController {
 			InternetAddress[] to = {new InternetAddress(reserveBean.getMail())};
 			//bcc(従業員マスタの管理者)
 			List<EmployeeBean> employeeList = employeeService.selectManager();
-			InternetAddress[] bcc = new InternetAddress[employeeList.size()];
-			for (int i = 0; i < bcc.length; i++) {
-				bcc[i] = new InternetAddress(employeeList.get(i).getEmail());
+			List<InternetAddress> bcc = new ArrayList<InternetAddress>();
+			for (EmployeeBean employeeBean : employeeList) {
+				bcc.add(new InternetAddress(employeeBean.getEmail()));
 			}
+			bcc.add(new InternetAddress(mailSettingBean.getSendAddress()));
+
 			//cc
 			InternetAddress[] cc = null;
 			//title
@@ -97,18 +99,20 @@ public class ReserveController {
 
 			body.append(LINE_SEPARATOR);
 			body.append("◆ご予約内容" + LINE_SEPARATOR);
-			body.append("【お名前】" + LINE_SEPARATOR);
+			body.append("【お名前】");
 			body.append(reserveBean.getName() + "様" + LINE_SEPARATOR);
-			body.append("【メールアドレス】" + LINE_SEPARATOR);
+			body.append("【メールアドレス】");
 			body.append(reserveBean.getMail() + LINE_SEPARATOR);
-			body.append("【お電話番号】" + LINE_SEPARATOR);
+			body.append("【お電話番号】");
 			body.append(reserveBean.getPhone() + LINE_SEPARATOR);
-			body.append("【ご予約人数】" + LINE_SEPARATOR);
+			body.append("【ご予約人数】");
 			body.append(reserveBean.getAmount() + LINE_SEPARATOR);
-			body.append("【ご予約日】" + LINE_SEPARATOR);
+			body.append("【ご予約日】");
 			body.append(reserveBean.getDay() + LINE_SEPARATOR);
-			body.append("【ご予約時間】" + LINE_SEPARATOR);
+			body.append("【ご予約時間】");
 			body.append(reserveBean.getTime() + LINE_SEPARATOR);
+			body.append("【ご希望コース】");
+			body.append(reserveBean.getCourse() + LINE_SEPARATOR);
 			body.append("【ご要望】" + LINE_SEPARATOR);
 			body.append(reserveBean.getNotes() + LINE_SEPARATOR);
 
@@ -117,7 +121,7 @@ public class ReserveController {
 			body.append("タイ古式エステ スマイル");
 
 			//送信
-			mailSendService.send(title, body.toString(), from, to, cc, bcc);
+			mailSendService.send(title, body.toString(), from, to, cc, bcc.toArray(new InternetAddress[bcc.size()]));
 			
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
@@ -128,12 +132,27 @@ public class ReserveController {
 
 
 	private void createSelectContents(ModelAndView modelAndView) {
+		List<Code> courseList = new ArrayList<Code>();
+		courseList.add(new Code("タイ古式70分(男性6000円 女性5000円)", "タイ古式70分(男性6000円 女性5000円)"));
+		courseList.add(new Code("タイ古式100分(男性9000円 女性7000円)", "タイ古式100分(男性9000円 女性7000円)"));
+		courseList.add(new Code("タイ古式130分(男性12000円 女性9000円)", "タイ古式130分(男性12000円 女性9000円)"));
+		courseList.add(new Code("タイ古式VIP70分(男性9000円 女性7000円)", "タイ古式VIP70分(男性9000円 女性7000円)"));
+		courseList.add(new Code("タイ古式VIP100分(男性12000円 女性9000円)", "タイ古式VIP100分(男性12000円 女性9000円)"));
+		courseList.add(new Code("タイ古式VIP130分(男性14000円 女性11000円)", "タイ古式VIP130分(男性14000円 女性11000円)"));
+		courseList.add(new Code("オイル70分(男性8000円 女性7000円)", "オイル70分(男性8000円 女性7000円)"));
+		courseList.add(new Code("オイル100分(男性12000円 女性9000円)", "オイル100分(男性12000円 女性9000円)"));
+		courseList.add(new Code("オイル130分(男性15000円 女性11000円)", "オイル130分(男性15000円 女性11000円)"));
+		courseList.add(new Code("オイルVIP70分(男性10000円 女性9000円)", "オイルVIP70分(男性10000円 女性9000円)"));
+		courseList.add(new Code("オイルVIP100分(男性15000円 女性12000円)", "オイルVIP100分(男性15000円 女性12000円)"));
+		courseList.add(new Code("オイルVIP130分(男性20000円 女性15000円)", "オイルVIP130分(男性20000円 女性15000円)"));
+		courseList.add(new Code("セット100分(男性11000円 女性10000円)", "セット100分(男性11000円 女性10000円)"));
+		courseList.add(new Code("セット130分(男性14000円 女性12000円)", "セット130分(男性14000円 女性12000円)"));
+		modelAndView.addObject("course", courseList);
+
 		List<Code> amountList = new ArrayList<Code>();
 		amountList.add(new Code("1名様", "1名様"));
 		amountList.add(new Code("2名様", "2名様"));
-		amountList.add(new Code("3名様", "3名様"));
-		amountList.add(new Code("4名様", "4名様"));
-		amountList.add(new Code("5名様以上", "5名様以上(ご要望欄にご記入下さい)"));
+		amountList.add(new Code("3名様以上", "3名様以上(ご要望欄にご記入下さい)"));
 		modelAndView.addObject("amount", amountList);
 
 		List<Code> timeList = new ArrayList<Code>();
@@ -164,13 +183,13 @@ public class ReserveController {
 		timeList.add(new Code("25:00", "25:00"));
 		modelAndView.addObject("time", timeList);
 
-		int daySize = 5;
+		int daySize = 7;
 		List<Code> dayList = new ArrayList<Code>();
 		Date date[] = new Date[daySize];
 		for (int i = 0; i < daySize; i++) {
 			date[i] = DateUtil.getDay((i + 1) * 60 * 24);
 			
-			String day = DateUtil.getDateFormat().format(date[i]);
+			String day = DateUtil.getDateFormat2().format(date[i]);
 			dayList.add(new Code(day, day));
 		}
 		modelAndView.addObject("day", dayList);

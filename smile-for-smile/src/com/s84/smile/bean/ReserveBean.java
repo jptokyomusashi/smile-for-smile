@@ -8,7 +8,16 @@ public class ReserveBean {
 	private String amount;
 	private String day;
 	private String time;
+	private String course;
 	private String notes;
+
+	public String getCourse() {
+		return course;
+	}
+
+	public void setCourse(String course) {
+		this.course = course;
+	}
 
 	public String getName() {
 		return name;

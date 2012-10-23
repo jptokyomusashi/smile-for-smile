@@ -63,7 +63,17 @@
 					</td>
 				</tr>
 				<tr>
-					<th>ご要望 <br/>(ご希望コース、ご希望スタッフ等<br/>はこちらに記入をお願いします)</th>
+					<th>ご希望コース</th>
+					<td>
+						<form:select disabled="true" path="course">
+							<form:option value=""/>
+							<form:options items="${course}" itemValue="value" itemLabel="label"/>
+						</form:select>
+						<form:hidden path="course"/>
+					</td>
+				</tr>
+				<tr>
+					<th>ご要望</th>
 					<td>
 						<form:textarea disabled="true" rows="5" cols="60" path="notes"/>
 						<form:hidden path="notes"/>
@@ -71,9 +81,11 @@
 				</tr>
 	
 			</table>
-			<input type="submit" class="normal" value="予約"/>
+			<input type="submit" value="予約"/>
 			<br/>
-			予約内容の修正を行う場合は、ブラウザの戻るボタンでお戻り下さい
+			<font color="#777777">
+			予約内容の修正を行う場合は、ブラウザの戻るボタンでお戻り下さい。
+			</font>
 		</form:form>
 	</div>
 </body>

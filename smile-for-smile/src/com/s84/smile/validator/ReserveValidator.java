@@ -32,9 +32,11 @@ public class ReserveValidator implements Validator {
 			}
 		}
 		//電話
+/*
 		if ("".equals(reserveBean.getPhone())) {
 			errors.rejectValue("phone", "error.required.reserve.phone");
 		}
+*/
 		//人数
 		if ("".equals(reserveBean.getAmount())) {
 			errors.rejectValue("amount", "error.required.reserve.amount");
@@ -46,6 +48,10 @@ public class ReserveValidator implements Validator {
 		//予約時間
 		if ("".equals(reserveBean.getTime())) {
 			errors.rejectValue("time", "error.required.reserve.time");
+		}
+		//コース
+		if ("".equals(reserveBean.getCourse())) {
+			errors.rejectValue("course", "error.required.reserve.course");
 		}
 
 	}
