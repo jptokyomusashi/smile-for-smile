@@ -24,6 +24,20 @@ public class PaymentSlipHeadDaoImpl implements PaymentSlipHeadDao {
 	private static final String SELECT_BY_SLIP_ID = "select * from payment_slip_head where slip_id = ?";
 	private static final String SELECT_LAST_INSERT_ID = "select last_insert_id()";
 	private static final String DELETE = "delete from payment_slip_head where slip_id = ?";
+	private static final String SELECT_SUMMARY_BY_PAYEE = 
+			"select payee, sum(unit_price * amount)" +
+			"  from payment_slip_head h" +
+			"  left outer join payment_slip_detail d" +
+			"    on h.slip_id = d.slip_id" +
+			" group by payee";
+	private static final String SELECT_SUMMARY_BY_ACCOUNT = 
+			"select a.name, sum(unit_price * amount)" +
+			"  from payment_slip_head h" +
+			"  left outer join payment_slip_detail d" +
+			"    on h.slip_id = d.slip_id" +
+			"  inner join account a" +
+			"    on d.account = a.id" +
+			" group by a.name";
 
 	private JdbcTemplate template;
 

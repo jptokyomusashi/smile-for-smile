@@ -22,7 +22,13 @@
 
 		<li><a href="#"><c:out value="売上集計表"/></a>
 			<ul>
-				<li><a href="" onclick="move('/salessummary/search.html'); return false;">売上集計表</a></li>
+				<li><a href="" onclick="move('/salessummary/search.html'); return false;">売上集計表１（明細表）</a></li>
+			</ul>
+			<ul>
+				<li><a href="" onclick="move('/summary/salessearch.html'); return false;">売上集計表２</a></li>
+			</ul>
+			<ul>
+				<li><a href="" onclick="move('/summary/paymentsearch.html'); return false;">支払集計表</a></li>
 			</ul>
 		</li>
 

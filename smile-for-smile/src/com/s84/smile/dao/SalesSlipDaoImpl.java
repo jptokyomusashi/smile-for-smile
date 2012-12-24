@@ -21,6 +21,19 @@ import com.s84.smile.bean.SalesSlipOptionmenuBean;
 public class SalesSlipDaoImpl implements SalesSlipDao {
 
 	private static final String SELECT_SLIP_ID = "select * from sales_slip_head where day = ? and employee_id = ?";
+	private static final String SELECT_SUMMARY = 
+			"select sum(" +
+			"       ifnull(h.course_charge, 0) +" +
+			"       ifnull(h.course_extension_charge, 0) +" +
+			"       ifnull(h.appoint_charge, 0) +" +
+			"       ifnull(o.charge, 0) -" +
+			"       ifnull(d.charge, 0)) as summary" +
+			"  from sales_slip_head h" +
+			"  left outer join sales_slip_discount d" +
+			"    on h.slip_id = d.slip_id" +
+			"  left outer join sales_slip_optionmenu o" +
+			"    on h.slip_id = o.slip_id" +
+			" where h.day >= ? and h.day <= ?";
 	private JdbcTemplate template;
 
 	@Autowired
